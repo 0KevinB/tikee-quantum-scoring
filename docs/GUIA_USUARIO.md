@@ -5,8 +5,8 @@
 Esta guía es para cualquiera que visite la app por primera vez y no haya leído
 el código ni los documentos técnicos: qué estás viendo, pestaña por pestaña, y
 qué significa cada número. Si buscas el análisis completo con todas las cifras,
-ve a [reports/INFORME.md](../reports/INFORME.md); si buscas el diseño técnico,
-[ARCHITECTURE.md](../ARCHITECTURE.md).
+revisa [reports/INFORME.md](../reports/INFORME.md); si buscas el diseño técnico,
+revisa [ARCHITECTURE.md](../ARCHITECTURE.md).
 
 ## Antes de entrar: dos advertencias que hay que leer
 
@@ -34,7 +34,7 @@ algo más importante para un regulador financiero: **usa menos variables y
 esconde menos información sensible** (como la zona donde vive alguien) que
 sobrevive de forma indirecta en el modelo.
 
-## Las 5 pestañas
+## Las 6 pestañas
 
 ### 1 · Datos
 
@@ -114,6 +114,14 @@ son reales o casualidad, y el panel de equidad.
    de crédito estable.
 3. El resultado de Friedman/Nemenyi (el diagrama de puntos) confirma con
    estadística si las diferencias de precisión entre métodos son reales.
+
+### 6 · Documentación
+
+Todo lo que no cabe en un gráfico: esta misma guía, el informe completo con
+todas las cifras, la tabla de resultados en bruto, las referencias públicas
+usadas para calibrar los datos sintéticos, y la documentación técnica
+(arquitectura del sistema y plan del proyecto) para quien quiera revisar o
+replicar el trabajo — todo dentro de la app, sin tener que ir a GitHub.
 
 ## Preguntas frecuentes
 

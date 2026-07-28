@@ -18,7 +18,9 @@ sys.path.insert(0, str(ROOT / "app"))
 
 from tikee.features.preprocess import LEVEL_A_VARS, build_preprocessor, get_variable_groups  # noqa: E402
 from tikee.models.interpret import top_reasons  # noqa: E402
-from glossary import TERMS, describe_arm  # noqa: E402
+from glossary import TERMS, apply_base_style, describe_arm  # noqa: E402
+
+apply_base_style()
 
 st.title("4 · Simulador")
 st.caption("El argumento de interpretabilidad SEPS hecho visible: probabilidad + las 3 razones principales.")

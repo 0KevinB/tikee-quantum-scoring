@@ -108,10 +108,11 @@ tikee-quantum-scoring/
 │   ├── viz/plots.py
 │   └── cli.py
 ├── app/
-│   ├── streamlit_app.py
+│   ├── Inicio.py
+│   ├── glossary.py
 │   └── pages/
 │       ├── 1_Datos.py · 2_Seleccion.py · 3_Comparacion.py
-│       ├── 4_Simulador.py · 5_Estabilidad.py
+│       ├── 4_Simulador.py · 5_Estabilidad.py · 6_Documentacion.py
 ├── notebooks/00_exploracion.ipynb
 ├── tests/
 │   ├── conftest.py · test_schema.py · test_target.py
@@ -752,7 +753,7 @@ python -m tikee.cli report                      # results.json -> RESULTS.md + f
 python -m tikee.cli all                         # pipeline completo
 ```
 
-`scripts/run_all.sh` = `python -m tikee.cli all && streamlit run app/streamlit_app.py`.
+`scripts/run_all.sh` = `python -m tikee.cli all && streamlit run app/Inicio.py`.
 Los resultados intermedios se cachean por semilla en `reports/cache/` con `joblib`, para poder reanudar sin recomputar (riesgo R7).
 
 ---

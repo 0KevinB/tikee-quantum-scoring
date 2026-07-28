@@ -401,7 +401,7 @@ Esta sección no es decorativa: es lo que convierte un ejercicio técnico en un 
 - [ ] Tabla de estabilidad de selección (frecuencia por variable × método × semilla) + prueba de Friedman
 - [ ] Tabla de equidad por grupo + resultados de detección de proxies
 - [ ] Curvas ROC superpuestas, gráfico KS, matrices de confusión, diagrama de diferencia crítica en `reports/figures/`
-- [ ] `streamlit run app/streamlit_app.py` levanta las 5 pestañas sin error
+- [ ] `streamlit run app/Inicio.py` levanta las 5 pestañas sin error
 - [ ] `pytest` en verde
 - [ ] `INFORME.md` con conclusión explícita según la tabla de decisión pre-registrada, sin haberla modificado después de ver los resultados
 - [ ] Revisión final contra la lista de anti-criterios de §2.7

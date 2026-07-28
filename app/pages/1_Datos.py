@@ -15,7 +15,9 @@ sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "app"))
 
 from tikee.viz.plots import correlation_heatmap  # noqa: E402
-from glossary import TERMS, VARIABLE_DESCRIPTIONS  # noqa: E402
+from glossary import TERMS, VARIABLE_DESCRIPTIONS, apply_base_style  # noqa: E402
+
+apply_base_style()
 
 st.title("1 · Datos")
 st.caption(

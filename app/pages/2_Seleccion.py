@@ -18,7 +18,9 @@ from tikee.features.expand import ground_truth_labels  # noqa: E402
 from tikee.features.preprocess import LEVEL_A_VARS  # noqa: E402
 from tikee.selection.qubo_builder import build_qubo, compute_lambda  # noqa: E402
 from tikee.viz.plots import qaoa_gap_curve, qubo_matrix_heatmap  # noqa: E402
-from glossary import TERMS, arm_legend_rows  # noqa: E402
+from glossary import TERMS, apply_base_style, arm_legend_rows  # noqa: E402
+
+apply_base_style()
 
 st.title("2 · Selección de variables")
 st.markdown(
@@ -27,9 +29,41 @@ st.markdown(
     "pero cada uno lo resuelve con un algoritmo distinto — algunos rápidos pero aproximados, otros "
     "lentos pero garantizados como óptimos."
 )
-with st.expander("¿Qué es el QUBO y el recocido simulado?"):
-    st.write(TERMS["QUBO"])
-    st.write(TERMS["Recocido simulado"])
+
+with st.expander("🧮 ¿Cómo funciona el algoritmo, paso a paso?", expanded=True):
+    st.markdown(
+        "**1. Medir qué tan relevante es cada variable.** Para cada una de las 18 (o 45) "
+        "variables candidatas, se calcula qué tanto \"dice\" sobre si alguien va a caer en mora "
+        "o no (información mutua con el objetivo). Una variable sin relación con la mora saca "
+        "un puntaje de relevancia cercano a 0; una variable muy predictiva, cercano a 1."
+    )
+    st.markdown(
+        "**2. Medir qué tan redundantes son entre sí.** Para cada par de variables se calcula "
+        "qué tan parecidas son (correlación): si dos variables casi siempre suben y bajan "
+        "juntas (como score_buro y peor_calificacion_12m), usar ambas no aporta información "
+        "extra — es peso muerto que el modelo no necesita cargar."
+    )
+    st.markdown(
+        "**3. Combinar todo en una sola fórmula (el QUBO).** Se arma una fórmula que premia "
+        "elegir variables relevantes y castiga elegir pares redundantes, más una regla que "
+        "obliga a elegir exactamente *k* variables (ni una más, ni una menos). Resolver esa "
+        "fórmula significa encontrar qué combinación de variables (encendidas = 1, apagadas = "
+        "0) le da el mejor puntaje posible."
+    )
+    st.markdown(
+        "**4. Resolver la fórmula.** Probarlas todas una por una funciona con 18 variables "
+        "(262.144 combinaciones), pero es imposible con 45 (35 billones). Por eso se usa "
+        "**recocido simulado**: prueba cambios al azar y a veces acepta soluciones un poco "
+        "peores para no quedarse atascado en una solución mediocre — inspirado en cómo se "
+        "enfría un metal despacio para que sus átomos se acomoden en la estructura más estable."
+    )
+    st.markdown(
+        "**5. Verificar si el recocido se equivocó.** Como el recocido no promete encontrar la "
+        "mejor combinación posible, se resuelve la misma fórmula con métodos más lentos pero "
+        "garantizados (probar todas las combinaciones, u optimización lineal certificada) — "
+        "son los brazos C1/C2 (y C2b/C4b en el escenario difícil), que actúan como \"jueces\" "
+        "del recocido."
+    )
 
 f4_path = ROOT / "reports" / "cache" / "f4_level_a_qubo.json"
 f5_path = ROOT / "reports" / "cache" / "f5_level_b.json"
@@ -70,7 +104,7 @@ if "qaoa" in f4 and f4["qaoa"]:
     st.caption(
         "QAOA con p=1,2,3 alcanza el óptimo exacto en este problema (Nivel A). No es una ventaja "
         "cuántica: el paisaje de esta instancia es fácil, y QAOA es órdenes de magnitud más caro "
-        "que la enumeración exhaustiva que ya conoce el óptimo. Ver ARCHITECTURE.md §7.4."
+        "que la enumeración exhaustiva que ya conoce el óptimo."
     )
 
 if f5_path.exists():
@@ -97,8 +131,8 @@ if f5_path.exists():
         "A k=20, varios solucionadores incluyen alguna variable de ruido puro (f44/f45) o "
         "irrelevante (f02/f03): el criterio relevancia-redundancia no penaliza una variable que "
         "es simultáneamente irrelevante y no-redundante, así que 'sale gratis' cuando k excede el "
-        "número de variables genuinamente útiles. Es una limitación real del criterio, detectada "
-        "por diseño (ARCHITECTURE.md §4.6)."
+        "número de variables genuinamente útiles. Es una limitación real del criterio, y se "
+        "reporta a propósito en vez de esconderla."
     )
 else:
     st.info("Corre scripts/f5_run_level_b.py para ver el detalle de Nivel B.")

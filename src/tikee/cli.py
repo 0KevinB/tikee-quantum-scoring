@@ -167,7 +167,7 @@ def cmd_all(args: argparse.Namespace) -> int:
         if rc != 0:
             print(f"Paso '{name}' falló (rc={rc}). Abortando pipeline.", file=sys.stderr)
             return rc
-    print("\nPipeline completo. Corre `streamlit run app/streamlit_app.py` (o `make app`) para ver la demo.")
+    print("\nPipeline completo. Corre `streamlit run app/Inicio.py` (o `make app`) para ver la demo.")
     return 0
 
 

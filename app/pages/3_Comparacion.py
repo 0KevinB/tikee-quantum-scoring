@@ -15,7 +15,9 @@ sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "app"))
 
 from tikee.viz.plots import confusion_matrix_figure, ks_curve, roc_overlay  # noqa: E402
-from glossary import TERMS, arm_legend_rows  # noqa: E402
+from glossary import TERMS, apply_base_style, arm_legend_rows  # noqa: E402
+
+apply_base_style()
 
 st.title("3 · Comparación de brazos")
 st.caption("Qué tan bien predice cada método, puesto lado a lado con los demás.")

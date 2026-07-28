@@ -15,7 +15,9 @@ sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "app"))
 
 from tikee.viz.plots import auc_boxplot, selection_frequency_heatmap  # noqa: E402
-from glossary import TERMS  # noqa: E402
+from glossary import LEVEL_A_ARMS, LEVEL_B_ARMS, TERMS, apply_base_style, arm_legend_rows  # noqa: E402
+
+apply_base_style()
 
 st.title("5 · Estabilidad, equidad y proxies")
 st.caption(
@@ -35,6 +37,11 @@ results = json.loads(results_path.read_text())
 
 level = st.radio("Nivel", ["Nivel A", "Nivel B"], horizontal=True)
 level_data = results[level]
+arms_this_level = LEVEL_A_ARMS if level == "Nivel A" else LEVEL_B_ARMS
+
+with st.expander(f"¿Qué es cada brazo (A0, B0, C0...) en {level}?", expanded=True):
+    st.caption("Los gráficos de esta página usan estos códigos en la leyenda — así se lee cada uno.")
+    st.dataframe(pd.DataFrame(arm_legend_rows(arms_this_level)), use_container_width=True, hide_index=True)
 
 st.header("AUC por brazo a través de 10 semillas")
 st.caption(

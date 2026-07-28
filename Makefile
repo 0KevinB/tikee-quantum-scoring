@@ -19,7 +19,7 @@ multiseed:
 	.venv/bin/python -m tikee.cli multiseed --seeds 42,101,202,303,404,505,606,707,808,909
 
 app:
-	.venv/bin/streamlit run app/streamlit_app.py
+	.venv/bin/streamlit run app/Inicio.py
 
 test:
 	.venv/bin/pytest -q

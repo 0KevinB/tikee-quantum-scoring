@@ -8,6 +8,12 @@ leer ningún .md — ver docs/GUIA_USUARIO.md para la versión completa en prosa
 
 from __future__ import annotations
 
+import re
+
+# Mismo orden que src/tikee/experiments/registry.py (fuente de verdad).
+LEVEL_A_ARMS: list[str] = ["A0", "A1", "B0", "B0x", "B1", "C0", "C1", "C2", "R"]
+LEVEL_B_ARMS: list[str] = ["A0b", "A1b", "B0b", "B1b", "C0b", "C2b", "C4b", "Rb"]
+
 # arm_code -> (selección de variables, clasificador, qué pregunta responde)
 ARM_INFO: dict[str, tuple[str, str, str]] = {
     "A0": ("Ninguna (usa todas las variables)", "Regresión logística", "Base interpretable y regulatoriamente segura"),
@@ -168,3 +174,80 @@ VARIABLE_DESCRIPTIONS: dict[str, str] = {
     "default": "Variable objetivo: 1 si el solicitante entró en mora (más de 90 días de atraso) en los 12 meses siguientes, 0 si pagó a tiempo.",
     "p_default_true": "Probabilidad real usada solo para generar los datos sintéticos (no la ve ningún modelo) — el 'terreno de verdad' contra el que se compara todo.",
 }
+
+
+def apply_base_style() -> None:
+    """Oculta el ícono de enlace que Streamlit agrega automáticamente a cada
+    encabezado (visible al pasar el mouse) — es ruido visual para un público
+    que no va a copiar anclas de sección. Llamar una vez por página, después
+    de `st.set_page_config` / al inicio del script."""
+    import streamlit as st
+
+    st.markdown(
+        '<style>[data-testid="stHeaderActionElements"] {display: none !important;}</style>',
+        unsafe_allow_html=True,
+    )
+
+
+# nombre de archivo .md -> cómo llamarlo en texto para un lector, sin la extensión
+_FRIENDLY_DOC_NAMES: dict[str, str] = {
+    "ARCHITECTURE": "el documento de arquitectura técnica",
+    "PLAN": "el plan del proyecto",
+    "GUIA_USUARIO": "la guía de usuario",
+    "INFORME": "el informe completo",
+    "RESULTS": "la tabla de resultados",
+    "README": "el resumen del repositorio",
+    "referencias_publicas": "las referencias de calibración",
+}
+
+_MD_LINK_RE = re.compile(r"\[([^\]]+)\]\(([^)]*?([\w.-]+)\.md[^)]*)\)")
+_MD_PAREN_CITATION_RE = re.compile(r"\s*\((?:[Vv]er\s+)?[\w./-]*\.md[^)]*\)")
+_MD_BARE_RE = re.compile(r"\b([\w./-]*?([\w-]+))\.md\b")
+_SECTION_SYMBOL_RE = re.compile(r"\s*§[\d]+(?:\.[\d]+)*")
+_FENCE_RE = re.compile(r"```.*?```", re.DOTALL)
+_A_EL_RE = re.compile(r"\b([Aa]) el\b")
+_DE_EL_RE = re.compile(r"\b([Dd])e el\b")
+
+
+def _friendly_name(stem: str) -> str:
+    base = stem.rsplit("/", 1)[-1]
+    if base in _FRIENDLY_DOC_NAMES:
+        return _FRIENDLY_DOC_NAMES[base]
+    return base.replace("_", " ").capitalize()
+
+
+def _humanize_segment(text: str) -> str:
+    text = _MD_LINK_RE.sub(lambda m: _friendly_name(m.group(3)), text)
+    text = _MD_PAREN_CITATION_RE.sub("", text)
+    text = _SECTION_SYMBOL_RE.sub("", text)
+    text = _MD_BARE_RE.sub(lambda m: _friendly_name(m.group(2)), text)
+    text = _A_EL_RE.sub(lambda m: ("Al" if m.group(1) == "A" else "al"), text)
+    text = _DE_EL_RE.sub(lambda m: ("Del" if m.group(1) == "D" else "del"), text)
+    text = re.sub(r"[ \t]+([.,;:])", r"\1", text)  # " ." -> "."
+    text = re.sub(r"\(\s*\)", "", text)  # paréntesis que quedaron vacíos
+    text = re.sub(r"[ \t]{2,}", " ", text)
+    # si una sustitución quedó al inicio de un encabezado ("la tabla de..."), capitalizar.
+    text = re.sub(
+        r"^(#{1,6}\s+)([a-záéíóúñ])",
+        lambda m: m.group(1) + m.group(2).upper(),
+        text,
+        flags=re.MULTILINE,
+    )
+    return text
+
+
+def humanize_markdown(text: str) -> str:
+    """Limpia un .md para lectura en la app: quita enlaces/citas técnicas a otros
+    .md, símbolos de sección (§X.Y) y extensiones ".md" sueltas, sin tocar el
+    archivo fuente (que sigue citando secciones exactas para uso técnico/repo).
+    Los bloques de código (```...```) se dejan intactos — ahí ".md" o "#" son
+    contenido literal (rutas, comentarios), no prosa a limpiar."""
+    parts = _FENCE_RE.split(text)
+    fences = _FENCE_RE.findall(text)
+    humanized = [_humanize_segment(p) for p in parts]
+    result = []
+    for i, part in enumerate(humanized):
+        result.append(part)
+        if i < len(fences):
+            result.append(fences[i])
+    return "".join(result)
