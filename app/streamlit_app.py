@@ -2,11 +2,20 @@
 
 from __future__ import annotations
 
+import sys
+from pathlib import Path
+
 import streamlit as st
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "app"))
+
+from glossary import TERMS  # noqa: E402
 
 st.set_page_config(page_title="Tikee — Scoring cuántico-inspirado", page_icon="🏦", layout="wide")
 
 st.title("Tikee — Selección de variables cuántico-inspirada para scoring crediticio")
+st.caption("Proyecto de innovación universitaria · UTPL Ecuador. Inspirado en el pitch de la fintech Tikee.")
 
 st.warning(
     "**Datos 100% sintéticos.** Ninguna cifra de esta app describe a ninguna cooperativa real. "
@@ -22,7 +31,20 @@ st.info(
     "como método práctico. En N=45 QAOA es físicamente imposible de simular (563 TB de RAM)."
 )
 
-st.header("Pregunta de investigación")
+st.header("¿Qué problema resuelve este proyecto? (en una frase)")
+st.markdown(
+    "Un modelo de crédito necesita decidir **qué variables del solicitante usar** (edad, ingresos, "
+    "historial de pagos...). Este proyecto compara un método \"inteligente\" de optimización (QUBO) "
+    "contra los métodos clásicos que ya usa la industria (LASSO, selección paso a paso), para "
+    "responder con honestidad: ¿el método nuevo realmente ayuda, o solo suena más sofisticado?"
+)
+st.success(
+    "**Resultado corto:** el método nuevo no gana en precisión. Donde sí gana es en algo más "
+    "importante para un regulador financiero: **usa menos variables y esconde menos información "
+    "sensible** (como la zona donde vive alguien) que sobrevive de forma indirecta en el modelo."
+)
+
+st.header("Pregunta de investigación (versión técnica)")
 st.markdown(
     "¿Formular la selección de variables como un problema **QUBO** mejora un modelo de scoring "
     "crediticio frente a LASSO o stepwise, cuando las variables candidatas están fuertemente "
@@ -33,15 +55,32 @@ st.markdown(
     "3. ¿Aporta algo **el paradigma de circuitos**? → QAOA simulado vs. recocido"
 )
 
-st.header("Navegación")
-st.markdown(
-    "- **1 · Datos** — esquema, correlaciones, fidelidad sintética\n"
-    "- **2 · Selección** — qué eligió cada método, matriz Q, curva QAOA\n"
-    "- **3 · Comparación** — métricas, ROC, KS, matrices de confusión\n"
-    "- **4 · Simulador** — probabilidad de default para un solicitante hipotético\n"
-    "- **5 · Estabilidad** — resultados a través de 10 semillas, equidad y proxies"
-)
+st.header("❓ Glosario rápido")
+st.caption("Términos que vas a ver repetidos en las 5 pestañas, explicados sin jerga.")
+term_cols = st.columns(2)
+term_items = list(TERMS.items())
+half = (len(term_items) + 1) // 2
+for col, items in zip(term_cols, [term_items[:half], term_items[half:]]):
+    with col:
+        for term, definition in items:
+            with st.expander(term):
+                st.write(definition)
 
-st.caption(
-    "Proyecto de innovación universitaria · UTPL Ecuador. Inspirado en el pitch de la fintech Tikee."
-)
+st.header("Cómo recorrer las 5 pestañas")
+tabs_guide = [
+    ("1 · Datos", "Cuántas solicitudes hay, cuántas caen en mora, cómo se relacionan las variables entre sí, "
+                  "el diccionario de cada columna y un botón para descargar el dataset sintético completo."),
+    ("2 · Selección", "Qué variables eligió cada método (\"brazo\"), en un escenario simple (18 variables) y uno "
+                       "difícil (45 variables, con \"trampas\" a propósito para ver si algún método cae)."),
+    ("3 · Comparación", "Qué tan bien predice cada método (curvas ROC, KS) y sus aciertos/errores lado a lado."),
+    ("4 · Simulador", "La parte interactiva: arma un solicitante hipotético y el modelo calcula al instante su "
+                       "probabilidad de default y las 3 razones que más pesaron en esa decisión."),
+    ("5 · Estabilidad", "La evidencia estadística seria: si los resultados se repiten en 10 corridas distintas, "
+                         "y el panel de equidad que revisa si el modelo esconde sesgo indirecto."),
+    ("6 · Documentación", "La guía completa en prosa, el informe con todas las cifras, las referencias de "
+                           "calibración y la documentación técnica — todo dentro de la app, sin ir a GitHub."),
+]
+for name, desc in tabs_guide:
+    st.markdown(f"- **{name}** — {desc}")
+
+st.page_link("pages/6_Documentacion.py", label="📚 Ir a la documentación completa", icon="➡️")

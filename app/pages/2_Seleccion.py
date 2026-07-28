@@ -7,17 +7,29 @@ import json
 import sys
 from pathlib import Path
 
+import pandas as pd
 import streamlit as st
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT / "app"))
 
 from tikee.features.expand import ground_truth_labels  # noqa: E402
 from tikee.features.preprocess import LEVEL_A_VARS  # noqa: E402
 from tikee.selection.qubo_builder import build_qubo, compute_lambda  # noqa: E402
 from tikee.viz.plots import qaoa_gap_curve, qubo_matrix_heatmap  # noqa: E402
+from glossary import TERMS, arm_legend_rows  # noqa: E402
 
 st.title("2 · Selección de variables")
+st.markdown(
+    "Cada fila de abajo es un **brazo**: un método distinto que compitió para elegir qué "
+    "variables usar. Todos parten del mismo QUBO (la fórmula de \"relevancia menos redundancia\"), "
+    "pero cada uno lo resuelve con un algoritmo distinto — algunos rápidos pero aproximados, otros "
+    "lentos pero garantizados como óptimos."
+)
+with st.expander("¿Qué es el QUBO y el recocido simulado?"):
+    st.write(TERMS["QUBO"])
+    st.write(TERMS["Recocido simulado"])
 
 f4_path = ROOT / "reports" / "cache" / "f4_level_a_qubo.json"
 f5_path = ROOT / "reports" / "cache" / "f5_level_b.json"
@@ -29,13 +41,24 @@ if not f4_path.exists():
 f4 = json.loads(f4_path.read_text())
 gt = ground_truth_labels()
 
-st.header("Nivel A (N=18)")
+st.header("Nivel A (18 variables candidatas)")
+st.caption(
+    "El escenario simple: 18 variables candidatas, con el óptimo global ya conocido de antemano "
+    "(por fuerza bruta), para poder verificar si cada método lo encuentra o no."
+)
 st.write(f"beta* = {f4['beta_star']}, k* = {f4['k_star']}, lambda* = {f4['lambda_star']:.3f}")
+st.dataframe(pd.DataFrame(arm_legend_rows(["C0", "C1", "C2"])), use_container_width=True, hide_index=True)
 
 for arm in ("C0", "C1", "C2"):
     sample = f4["solutions"][arm]["sample"]
     selected = sorted(v for i, v in enumerate(LEVEL_A_VARS) if str(sample.get(str(i), sample.get(i, 0))) == "1")
     st.write(f"**{arm}** (E={f4['solutions'][arm]['energy']:.3f}): {selected}")
+st.caption(
+    "\"E\" es la energía del QUBO: mientras más baja (más negativa), mejor cumple la combinación "
+    "de variables el objetivo de \"relevante pero no redundante\". Fíjate que C1 y C2 — los dos "
+    "métodos que garantizan el óptimo — eligieron exactamente la misma lista: es la prueba de que "
+    "el problema está bien planteado e implementado."
+)
 
 st.subheader("Marcas de trampa (Nivel A)")
 st.caption("nivel_educacion y zona_residencia tienen coeficiente cero en el target — "
@@ -51,11 +74,16 @@ if "qaoa" in f4 and f4["qaoa"]:
     )
 
 if f5_path.exists():
-    st.header("Nivel B (N=45)")
+    st.header("Nivel B (45 variables candidatas)")
+    st.caption(
+        "El escenario difícil y más realista: 45 variables candidatas, con dos columnas de puro "
+        "ruido metidas a propósito, para ver si algún método cae en la trampa de \"elegirlas gratis\"."
+    )
     f5 = json.loads(f5_path.read_text())
     st.write(f"beta* = {f5['beta_star']}, k* = {f5['k_star']}")
     st.write(f"MILP (límite 600s): status={f5['milp_status']['status']}, "
              f"mip_gap={f5['milp_status'].get('mip_gap')}")
+    st.dataframe(pd.DataFrame(arm_legend_rows(["C0b", "C2b", "C4b"])), use_container_width=True, hide_index=True)
 
     for arm in ("C0b", "C2b", "C4b"):
         if arm in f5["results"]:
