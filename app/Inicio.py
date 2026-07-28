@@ -1,4 +1,4 @@
-"""Portada y navegación de la app de demostración. ARCHITECTURE.md §11."""
+"""Portada y navegación de la app de demostración."""
 
 from __future__ import annotations
 
@@ -10,9 +10,10 @@ import streamlit as st
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "app"))
 
-from glossary import TERMS  # noqa: E402
+from glossary import TERMS, apply_base_style  # noqa: E402
 
 st.set_page_config(page_title="Tikee — Scoring cuántico-inspirado", page_icon="🏦", layout="wide")
+apply_base_style()
 
 st.title("Tikee — Selección de variables cuántico-inspirada para scoring crediticio")
 st.caption("Proyecto de innovación universitaria · UTPL Ecuador. Inspirado en el pitch de la fintech Tikee.")
@@ -41,7 +42,8 @@ st.markdown(
 st.success(
     "**Resultado corto:** el método nuevo no gana en precisión. Donde sí gana es en algo más "
     "importante para un regulador financiero: **usa menos variables y esconde menos información "
-    "sensible** (como la zona donde vive alguien) que sobrevive de forma indirecta en el modelo."
+    "sensible** (como la zona donde vive alguien) que sobrevive de forma indirecta en el modelo. "
+    "Tabla completa de resultados en la pestaña **6 · Documentación**."
 )
 
 st.header("Pregunta de investigación (versión técnica)")
@@ -52,11 +54,13 @@ st.markdown(
     "El mismo QUBO se resuelve con **cinco solucionadores** para separar tres preguntas:\n\n"
     "1. ¿Es buena **la formulación** QUBO relevancia-redundancia? → recocido vs. LASSO\n"
     "2. ¿Aporta algo **el heurístico**? → recocido vs. óptimo certificado (enumeración / MILP)\n"
-    "3. ¿Aporta algo **el paradigma de circuitos**? → QAOA simulado vs. recocido"
+    "3. ¿Aporta algo **el paradigma de circuitos**? → QAOA simulado vs. recocido\n\n"
+    "El paso a paso completo del algoritmo (cómo se mide relevancia, redundancia y cómo se "
+    "resuelve) está explicado en la pestaña **2 · Selección**."
 )
 
 st.header("❓ Glosario rápido")
-st.caption("Términos que vas a ver repetidos en las 5 pestañas, explicados sin jerga.")
+st.caption("Términos que vas a ver repetidos en toda la app, explicados sin jerga.")
 term_cols = st.columns(2)
 term_items = list(TERMS.items())
 half = (len(term_items) + 1) // 2
@@ -66,19 +70,19 @@ for col, items in zip(term_cols, [term_items[:half], term_items[half:]]):
             with st.expander(term):
                 st.write(definition)
 
-st.header("Cómo recorrer las 5 pestañas")
+st.header("Cómo recorrer las 6 pestañas")
 tabs_guide = [
     ("1 · Datos", "Cuántas solicitudes hay, cuántas caen en mora, cómo se relacionan las variables entre sí, "
                   "el diccionario de cada columna y un botón para descargar el dataset sintético completo."),
-    ("2 · Selección", "Qué variables eligió cada método (\"brazo\"), en un escenario simple (18 variables) y uno "
-                       "difícil (45 variables, con \"trampas\" a propósito para ver si algún método cae)."),
+    ("2 · Selección", "Qué variables eligió cada método (\"brazo\") y el algoritmo explicado paso a paso, en un "
+                       "escenario simple (18 variables) y uno difícil (45, con \"trampas\" a propósito)."),
     ("3 · Comparación", "Qué tan bien predice cada método (curvas ROC, KS) y sus aciertos/errores lado a lado."),
     ("4 · Simulador", "La parte interactiva: arma un solicitante hipotético y el modelo calcula al instante su "
                        "probabilidad de default y las 3 razones que más pesaron en esa decisión."),
     ("5 · Estabilidad", "La evidencia estadística seria: si los resultados se repiten en 10 corridas distintas, "
                          "y el panel de equidad que revisa si el modelo esconde sesgo indirecto."),
-    ("6 · Documentación", "La guía completa en prosa, el informe con todas las cifras, las referencias de "
-                           "calibración y la documentación técnica — todo dentro de la app, sin ir a GitHub."),
+    ("6 · Documentación", "La guía completa en prosa, el informe con todas las cifras, la tabla de resultados, "
+                           "las referencias de calibración y la documentación técnica — todo dentro de la app."),
 ]
 for name, desc in tabs_guide:
     st.markdown(f"- **{name}** — {desc}")
