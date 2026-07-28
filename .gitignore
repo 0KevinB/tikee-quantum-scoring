@@ -10,6 +10,13 @@ data/processed/*.parquet
 !data/processed/dataset_seed42.parquet
 reports/cache/*.json
 reports/cache/*.joblib
+# Excepciones: la app Streamlit desplegada (Railway) los lee en vivo y no hay
+# forma de regenerarlos en el contenedor de despliegue sin recorrer el pipeline
+# completo (~1h). Son artefactos propios (no de terceros), seguros de versionar.
+!reports/cache/f4_level_a_qubo.json
+!reports/cache/f5_level_b.json
+!reports/cache/f7_fairness.json
+!reports/cache/app_artifacts.joblib
 .DS_Store
 *.egg-info/
 .vercel

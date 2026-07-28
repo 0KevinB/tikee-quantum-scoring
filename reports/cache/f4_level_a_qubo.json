@@ -1,0 +1,664 @@
+{
+  "beta_star": 0.25,
+  "k_star": 9,
+  "lambda_star": 9.453187569035046,
+  "sweep_results": [
+    {
+      "beta": 0.25,
+      "k": 5,
+      "cv_auc": 0.7770998446113915,
+      "selected_variables": [
+        "ingreso_mensual",
+        "score_buro",
+        "peor_calificacion_12m",
+        "dias_mora_max_12m",
+        "plazo_meses"
+      ]
+    },
+    {
+      "beta": 0.25,
+      "k": 6,
+      "cv_auc": 0.8109737139119975,
+      "selected_variables": [
+        "antiguedad_socio_meses",
+        "score_buro",
+        "peor_calificacion_12m",
+        "dias_mora_max_12m",
+        "ratio_cuota_ingreso",
+        "tipo_empleo"
+      ]
+    },
+    {
+      "beta": 0.25,
+      "k": 7,
+      "cv_auc": 0.8116767402913633,
+      "selected_variables": [
+        "antiguedad_socio_meses",
+        "gastos_mensuales",
+        "score_buro",
+        "num_operaciones_vigentes",
+        "peor_calificacion_12m",
+        "dias_mora_max_12m",
+        "ratio_cuota_ingreso"
+      ]
+    },
+    {
+      "beta": 0.25,
+      "k": 8,
+      "cv_auc": 0.8131188150809251,
+      "selected_variables": [
+        "antiguedad_laboral_meses",
+        "antiguedad_socio_meses",
+        "ingreso_mensual",
+        "score_buro",
+        "num_operaciones_vigentes",
+        "peor_calificacion_12m",
+        "dias_mora_max_12m",
+        "ratio_cuota_ingreso"
+      ]
+    },
+    {
+      "beta": 0.25,
+      "k": 9,
+      "cv_auc": 0.8136113506593812,
+      "selected_variables": [
+        "antiguedad_socio_meses",
+        "ingreso_mensual",
+        "gastos_mensuales",
+        "score_buro",
+        "num_operaciones_vigentes",
+        "peor_calificacion_12m",
+        "dias_mora_max_12m",
+        "plazo_meses",
+        "ratio_cuota_ingreso"
+      ]
+    },
+    {
+      "beta": 0.25,
+      "k": 10,
+      "cv_auc": 0.8125485659178823,
+      "selected_variables": [
+        "antiguedad_laboral_meses",
+        "antiguedad_socio_meses",
+        "gastos_mensuales",
+        "score_buro",
+        "num_operaciones_vigentes",
+        "peor_calificacion_12m",
+        "dias_mora_max_12m",
+        "monto_solicitado",
+        "plazo_meses",
+        "ratio_cuota_ingreso"
+      ]
+    },
+    {
+      "beta": 0.5,
+      "k": 5,
+      "cv_auc": 0.8133586751582899,
+      "selected_variables": [
+        "antiguedad_socio_meses",
+        "score_buro",
+        "deuda_total_sistema",
+        "dias_mora_max_12m",
+        "ratio_cuota_ingreso"
+      ]
+    },
+    {
+      "beta": 0.5,
+      "k": 6,
+      "cv_auc": 0.8084965250998237,
+      "selected_variables": [
+        "edad",
+        "ingreso_mensual",
+        "score_buro",
+        "num_operaciones_vigentes",
+        "dias_mora_max_12m",
+        "ratio_cuota_ingreso"
+      ]
+    },
+    {
+      "beta": 0.5,
+      "k": 7,
+      "cv_auc": 0.8123820918388669,
+      "selected_variables": [
+        "antiguedad_socio_meses",
+        "ingreso_mensual",
+        "score_buro",
+        "num_operaciones_vigentes",
+        "peor_calificacion_12m",
+        "dias_mora_max_12m",
+        "ratio_cuota_ingreso"
+      ]
+    },
+    {
+      "beta": 0.5,
+      "k": 8,
+      "cv_auc": 0.8131452342722157,
+      "selected_variables": [
+        "edad",
+        "antiguedad_socio_meses",
+        "score_buro",
+        "peor_calificacion_12m",
+        "dias_mora_max_12m",
+        "nivel_educacion",
+        "ratio_cuota_ingreso",
+        "ratio_deuda_ingreso"
+      ]
+    },
+    {
+      "beta": 0.5,
+      "k": 9,
+      "cv_auc": 0.8066129893554483,
+      "selected_variables": [
+        "edad",
+        "ingreso_mensual",
+        "score_buro",
+        "deuda_total_sistema",
+        "peor_calificacion_12m",
+        "dias_mora_max_12m",
+        "nivel_educacion",
+        "ratio_cuota_ingreso",
+        "zona_residencia"
+      ]
+    },
+    {
+      "beta": 0.5,
+      "k": 10,
+      "cv_auc": 0.8104063443567148,
+      "selected_variables": [
+        "carga_familiar",
+        "antiguedad_laboral_meses",
+        "antiguedad_socio_meses",
+        "gastos_mensuales",
+        "score_buro",
+        "peor_calificacion_12m",
+        "dias_mora_max_12m",
+        "plazo_meses",
+        "nivel_educacion",
+        "ratio_cuota_ingreso"
+      ]
+    },
+    {
+      "beta": 1.0,
+      "k": 5,
+      "cv_auc": 0.7841744662453987,
+      "selected_variables": [
+        "antiguedad_socio_meses",
+        "ingreso_mensual",
+        "score_buro",
+        "dias_mora_max_12m",
+        "plazo_meses"
+      ]
+    },
+    {
+      "beta": 1.0,
+      "k": 6,
+      "cv_auc": 0.8043982400960843,
+      "selected_variables": [
+        "carga_familiar",
+        "antiguedad_socio_meses",
+        "deuda_total_sistema",
+        "peor_calificacion_12m",
+        "dias_mora_max_12m",
+        "ratio_cuota_ingreso"
+      ]
+    },
+    {
+      "beta": 1.0,
+      "k": 7,
+      "cv_auc": 0.8115945806377306,
+      "selected_variables": [
+        "antiguedad_socio_meses",
+        "gastos_mensuales",
+        "score_buro",
+        "num_operaciones_vigentes",
+        "dias_mora_max_12m",
+        "nivel_educacion",
+        "ratio_cuota_ingreso"
+      ]
+    },
+    {
+      "beta": 1.0,
+      "k": 8,
+      "cv_auc": 0.7947938929132203,
+      "selected_variables": [
+        "carga_familiar",
+        "antiguedad_socio_meses",
+        "score_buro",
+        "num_operaciones_vigentes",
+        "dias_mora_max_12m",
+        "monto_solicitado",
+        "plazo_meses",
+        "nivel_educacion"
+      ]
+    },
+    {
+      "beta": 1.0,
+      "k": 9,
+      "cv_auc": 0.805330501986312,
+      "selected_variables": [
+        "carga_familiar",
+        "antiguedad_laboral_meses",
+        "antiguedad_socio_meses",
+        "score_buro",
+        "peor_calificacion_12m",
+        "nivel_educacion",
+        "ratio_cuota_ingreso",
+        "ratio_deuda_ingreso",
+        "tipo_empleo"
+      ]
+    },
+    {
+      "beta": 1.0,
+      "k": 10,
+      "cv_auc": 0.7745063430687107,
+      "selected_variables": [
+        "carga_familiar",
+        "antiguedad_socio_meses",
+        "gastos_mensuales",
+        "score_buro",
+        "num_operaciones_vigentes",
+        "peor_calificacion_12m",
+        "plazo_meses",
+        "nivel_educacion",
+        "zona_residencia",
+        "tipo_empleo"
+      ]
+    },
+    {
+      "beta": 2.0,
+      "k": 5,
+      "cv_auc": 0.7975821056133564,
+      "selected_variables": [
+        "antiguedad_socio_meses",
+        "ingreso_mensual",
+        "dias_mora_max_12m",
+        "nivel_educacion",
+        "ratio_cuota_ingreso"
+      ]
+    },
+    {
+      "beta": 2.0,
+      "k": 6,
+      "cv_auc": 0.7996455047106934,
+      "selected_variables": [
+        "antiguedad_laboral_meses",
+        "antiguedad_socio_meses",
+        "ingreso_mensual",
+        "deuda_total_sistema",
+        "dias_mora_max_12m",
+        "ratio_cuota_ingreso"
+      ]
+    },
+    {
+      "beta": 2.0,
+      "k": 7,
+      "cv_auc": 0.7747146979873778,
+      "selected_variables": [
+        "carga_familiar",
+        "num_operaciones_vigentes",
+        "dias_mora_max_12m",
+        "monto_solicitado",
+        "plazo_meses",
+        "nivel_educacion",
+        "zona_residencia"
+      ]
+    },
+    {
+      "beta": 2.0,
+      "k": 8,
+      "cv_auc": 0.8015460294178395,
+      "selected_variables": [
+        "antiguedad_laboral_meses",
+        "antiguedad_socio_meses",
+        "ingreso_mensual",
+        "score_buro",
+        "num_operaciones_vigentes",
+        "nivel_educacion",
+        "ratio_cuota_ingreso",
+        "tipo_empleo"
+      ]
+    },
+    {
+      "beta": 2.0,
+      "k": 9,
+      "cv_auc": 0.8032369585564734,
+      "selected_variables": [
+        "carga_familiar",
+        "antiguedad_socio_meses",
+        "ingreso_mensual",
+        "score_buro",
+        "deuda_total_sistema",
+        "peor_calificacion_12m",
+        "ratio_cuota_ingreso",
+        "zona_residencia",
+        "tipo_empleo"
+      ]
+    },
+    {
+      "beta": 2.0,
+      "k": 10,
+      "cv_auc": 0.8035007095622142,
+      "selected_variables": [
+        "carga_familiar",
+        "antiguedad_laboral_meses",
+        "antiguedad_socio_meses",
+        "gastos_mensuales",
+        "deuda_total_sistema",
+        "peor_calificacion_12m",
+        "dias_mora_max_12m",
+        "nivel_educacion",
+        "ratio_cuota_ingreso",
+        "tipo_empleo"
+      ]
+    }
+  ],
+  "checkpoint_f4_c1_eq_c2": true,
+  "c2_penalized_eq_hard": true,
+  "solutions": {
+    "C0": {
+      "sample": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 1,
+        "4": 1,
+        "5": 0,
+        "6": 1,
+        "7": 1,
+        "8": 0,
+        "9": 1,
+        "10": 1,
+        "11": 0,
+        "12": 1,
+        "13": 0,
+        "14": 1,
+        "15": 0,
+        "16": 1,
+        "17": 0
+      },
+      "energy": -768.7264331377314
+    },
+    "C1": {
+      "sample": {
+        "0": 0,
+        "1": 1,
+        "2": 0,
+        "3": 1,
+        "4": 1,
+        "5": 0,
+        "6": 1,
+        "7": 1,
+        "8": 0,
+        "9": 1,
+        "10": 1,
+        "11": 0,
+        "12": 1,
+        "13": 0,
+        "14": 1,
+        "15": 0,
+        "16": 0,
+        "17": 0
+      },
+      "energy": -768.7482308269895
+    },
+    "C2": {
+      "sample": {
+        "0": 0,
+        "1": 1,
+        "2": 0,
+        "3": 1,
+        "4": 1,
+        "5": 0,
+        "6": 1,
+        "7": 1,
+        "8": 0,
+        "9": 1,
+        "10": 1,
+        "11": 0,
+        "12": 1,
+        "13": 0,
+        "14": 1,
+        "15": 0,
+        "16": 0,
+        "17": 0
+      },
+      "energy": -768.7482308269896
+    }
+  },
+  "qaoa": {
+    "1": {
+      "energy": -768.7482308269898,
+      "wall_time_s": 1534.791640624986,
+      "p": 1,
+      "n_evaluations": 300,
+      "n_restarts": 2,
+      "gap_vs_optimal": 4.436569731002157e-16
+    },
+    "2": {
+      "energy": -768.7482308269898,
+      "wall_time_s": 1687.628224834043,
+      "p": 2,
+      "n_evaluations": 300,
+      "n_restarts": 2,
+      "gap_vs_optimal": 4.436569731002157e-16
+    },
+    "3": {
+      "energy": -768.7482308269898,
+      "wall_time_s": 1646.705851458013,
+      "p": 3,
+      "n_evaluations": 300,
+      "n_restarts": 2,
+      "gap_vs_optimal": 4.436569731002157e-16
+    }
+  },
+  "random_baseline_auc": {
+    "mean": 0.7703709581727715,
+    "std": 0.04063343502733785
+  },
+  "final_results": {
+    "C0": {
+      "auc": 0.820095479670045,
+      "ks": 0.5008116456886889,
+      "pr_auc": 0.3522545719398201,
+      "gini": 0.6401909593400901,
+      "brier": 0.06431319636963996,
+      "precision": 0.18874560375146543,
+      "recall": 0.8090452261306532,
+      "f1": 0.3060836501901141,
+      "confusion_matrix": {
+        "tn": 1509,
+        "fp": 692,
+        "fn": 38,
+        "tp": 161
+      },
+      "approval_rate": 0.6445833333333333,
+      "threshold": 0.06738112374856854,
+      "auc_ci95": [
+        0.7903331243646319,
+        0.8493120763186048
+      ],
+      "selected_variables": [
+        "antiguedad_socio_meses",
+        "ingreso_mensual",
+        "score_buro",
+        "num_operaciones_vigentes",
+        "peor_calificacion_12m",
+        "dias_mora_max_12m",
+        "plazo_meses",
+        "ratio_cuota_ingreso",
+        "zona_residencia"
+      ],
+      "arm": "C0"
+    },
+    "C1": {
+      "auc": 0.8189995867570474,
+      "ks": 0.491752264274576,
+      "pr_auc": 0.3465264199291115,
+      "gini": 0.6379991735140949,
+      "brier": 0.06457209496265866,
+      "precision": 0.20305980528511822,
+      "recall": 0.7336683417085427,
+      "f1": 0.31808278867102396,
+      "confusion_matrix": {
+        "tn": 1628,
+        "fp": 573,
+        "fn": 53,
+        "tp": 146
+      },
+      "approval_rate": 0.7004166666666667,
+      "threshold": 0.07897398833550028,
+      "auc_ci95": [
+        0.7896075836390459,
+        0.8488360051701964
+      ],
+      "selected_variables": [
+        "carga_familiar",
+        "antiguedad_socio_meses",
+        "ingreso_mensual",
+        "score_buro",
+        "num_operaciones_vigentes",
+        "peor_calificacion_12m",
+        "dias_mora_max_12m",
+        "plazo_meses",
+        "ratio_cuota_ingreso"
+      ],
+      "arm": "C1"
+    },
+    "C2": {
+      "auc": 0.8189995867570474,
+      "ks": 0.491752264274576,
+      "pr_auc": 0.3465264199291115,
+      "gini": 0.6379991735140949,
+      "brier": 0.06457209496265866,
+      "precision": 0.20305980528511822,
+      "recall": 0.7336683417085427,
+      "f1": 0.31808278867102396,
+      "confusion_matrix": {
+        "tn": 1628,
+        "fp": 573,
+        "fn": 53,
+        "tp": 146
+      },
+      "approval_rate": 0.7004166666666667,
+      "threshold": 0.07897398833550028,
+      "auc_ci95": [
+        0.7896075836390459,
+        0.8488360051701964
+      ],
+      "selected_variables": [
+        "carga_familiar",
+        "antiguedad_socio_meses",
+        "ingreso_mensual",
+        "score_buro",
+        "num_operaciones_vigentes",
+        "peor_calificacion_12m",
+        "dias_mora_max_12m",
+        "plazo_meses",
+        "ratio_cuota_ingreso"
+      ],
+      "arm": "C2"
+    },
+    "C3_p1": {
+      "auc": 0.8189995867570474,
+      "ks": 0.491752264274576,
+      "pr_auc": 0.3465264199291115,
+      "gini": 0.6379991735140949,
+      "brier": 0.06457209496265866,
+      "precision": 0.20305980528511822,
+      "recall": 0.7336683417085427,
+      "f1": 0.31808278867102396,
+      "confusion_matrix": {
+        "tn": 1628,
+        "fp": 573,
+        "fn": 53,
+        "tp": 146
+      },
+      "approval_rate": 0.7004166666666667,
+      "threshold": 0.07897398833550028,
+      "auc_ci95": [
+        0.7896075836390459,
+        0.8488360051701964
+      ],
+      "selected_variables": [
+        "carga_familiar",
+        "antiguedad_socio_meses",
+        "ingreso_mensual",
+        "score_buro",
+        "num_operaciones_vigentes",
+        "peor_calificacion_12m",
+        "dias_mora_max_12m",
+        "plazo_meses",
+        "ratio_cuota_ingreso"
+      ],
+      "arm": "C3_p1"
+    },
+    "C3_p2": {
+      "auc": 0.8189995867570474,
+      "ks": 0.491752264274576,
+      "pr_auc": 0.3465264199291115,
+      "gini": 0.6379991735140949,
+      "brier": 0.06457209496265866,
+      "precision": 0.20305980528511822,
+      "recall": 0.7336683417085427,
+      "f1": 0.31808278867102396,
+      "confusion_matrix": {
+        "tn": 1628,
+        "fp": 573,
+        "fn": 53,
+        "tp": 146
+      },
+      "approval_rate": 0.7004166666666667,
+      "threshold": 0.07897398833550028,
+      "auc_ci95": [
+        0.7896075836390459,
+        0.8488360051701964
+      ],
+      "selected_variables": [
+        "carga_familiar",
+        "antiguedad_socio_meses",
+        "ingreso_mensual",
+        "score_buro",
+        "num_operaciones_vigentes",
+        "peor_calificacion_12m",
+        "dias_mora_max_12m",
+        "plazo_meses",
+        "ratio_cuota_ingreso"
+      ],
+      "arm": "C3_p2"
+    },
+    "C3_p3": {
+      "auc": 0.8189995867570474,
+      "ks": 0.491752264274576,
+      "pr_auc": 0.3465264199291115,
+      "gini": 0.6379991735140949,
+      "brier": 0.06457209496265866,
+      "precision": 0.20305980528511822,
+      "recall": 0.7336683417085427,
+      "f1": 0.31808278867102396,
+      "confusion_matrix": {
+        "tn": 1628,
+        "fp": 573,
+        "fn": 53,
+        "tp": 146
+      },
+      "approval_rate": 0.7004166666666667,
+      "threshold": 0.07897398833550028,
+      "auc_ci95": [
+        0.7896075836390459,
+        0.8488360051701964
+      ],
+      "selected_variables": [
+        "carga_familiar",
+        "antiguedad_socio_meses",
+        "ingreso_mensual",
+        "score_buro",
+        "num_operaciones_vigentes",
+        "peor_calificacion_12m",
+        "dias_mora_max_12m",
+        "plazo_meses",
+        "ratio_cuota_ingreso"
+      ],
+      "arm": "C3_p3"
+    }
+  }
+}

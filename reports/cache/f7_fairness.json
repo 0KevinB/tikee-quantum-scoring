@@ -1,0 +1,1023 @@
+{
+  "level_a": {
+    "A0": {
+      "arm": "A0",
+      "n_vars": 18,
+      "fairness_by_group": {
+        "sexo": {
+          "per_group": {
+            "F": {
+              "auc": 0.7948009371701239,
+              "n": 1178,
+              "ks": 0.4533088456158118
+            },
+            "M": {
+              "auc": 0.842343934040047,
+              "n": 1222,
+              "ks": 0.5484687868080095
+            }
+          },
+          "approval_rate": {
+            "F": 0.6714770797962648,
+            "M": 0.6841243862520459
+          },
+          "demographic_parity_diff": 0.012647306455781049,
+          "disparate_impact_ratio": 0.9815131477404732,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.06605504587155964,
+          "equalized_odds_diff": 0.06605504587155964,
+          "brier_by_group": {
+            "F": 0.07158069594832389,
+            "M": 0.057790422324992874
+          }
+        },
+        "zona_residencia": {
+          "per_group": {
+            "urbana": {
+              "auc": 0.7982683982683982,
+              "n": 1496,
+              "ks": 0.47128427128427125
+            },
+            "rural": {
+              "auc": 0.8389329289308608,
+              "n": 904,
+              "ks": 0.544413041979734
+            }
+          },
+          "approval_rate": {
+            "urbana": 0.697192513368984,
+            "rural": 0.6460176991150443
+          },
+          "demographic_parity_diff": 0.05117481425393977,
+          "disparate_impact_ratio": 0.9265987323836108,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.0817160367722165,
+          "equalized_odds_diff": 0.0817160367722165,
+          "brier_by_group": {
+            "urbana": 0.060829943086516264,
+            "rural": 0.07073048788809569
+          }
+        },
+        "provincia": {
+          "per_group": {
+            "Azuay": {
+              "auc": 0.7124183006535948,
+              "n": 381,
+              "ks": 0.35224089635854344
+            },
+            "otras": {
+              "auc": 0.850964891885608,
+              "n": 435,
+              "ks": 0.5820158102766798
+            },
+            "Pichincha": {
+              "auc": 0.8283738191632928,
+              "n": 622,
+              "ks": 0.544331983805668
+            },
+            "Loja": {
+              "auc": 0.8589357950420081,
+              "n": 342,
+              "ks": 0.5911212529820559
+            },
+            "Guayas": {
+              "auc": 0.8056891025641025,
+              "n": 620,
+              "ks": 0.49125874125874125
+            }
+          },
+          "approval_rate": {
+            "Azuay": 0.6929133858267716,
+            "otras": 0.6942528735632184,
+            "Pichincha": 0.6913183279742765,
+            "Loja": 0.6578947368421053,
+            "Guayas": 0.6548387096774193
+          },
+          "demographic_parity_diff": 0.0394141638857991,
+          "disparate_impact_ratio": 0.9432279427472762,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.2553763440860215,
+          "equalized_odds_diff": 0.2553763440860215,
+          "brier_by_group": {
+            "Azuay": 0.05685277288796692,
+            "otras": 0.07437000165153271,
+            "Pichincha": 0.06695872761619459,
+            "Loja": 0.05952928549418252,
+            "Guayas": 0.06277863629556651
+          }
+        }
+      },
+      "proxy_detection_auc": {
+        "sexo": 0.5543439600532402,
+        "zona_residencia": 1.0,
+        "provincia": 0.5126637104445546
+      }
+    },
+    "B0": {
+      "arm": "B0",
+      "n_vars": 17,
+      "fairness_by_group": {
+        "sexo": {
+          "per_group": {
+            "F": {
+              "auc": 0.7948695943220534,
+              "n": 1178,
+              "ks": 0.45687043537216465
+            },
+            "M": {
+              "auc": 0.8419414998036906,
+              "n": 1222,
+              "ks": 0.5467020023557126
+            }
+          },
+          "approval_rate": {
+            "F": 0.6731748726655349,
+            "M": 0.6841243862520459
+          },
+          "demographic_parity_diff": 0.010949513586510973,
+          "disparate_impact_ratio": 0.9839948497575163,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.06605504587155964,
+          "equalized_odds_diff": 0.06605504587155964,
+          "brier_by_group": {
+            "F": 0.07155628483932004,
+            "M": 0.05776351910890159
+          }
+        },
+        "zona_residencia": {
+          "per_group": {
+            "urbana": {
+              "auc": 0.7982356027810573,
+              "n": 1496,
+              "ks": 0.46868686868686865
+            },
+            "rural": {
+              "auc": 0.8390156476183911,
+              "n": 904,
+              "ks": 0.5419590542496726
+            }
+          },
+          "approval_rate": {
+            "urbana": 0.6985294117647058,
+            "rural": 0.6460176991150443
+          },
+          "demographic_parity_diff": 0.05251171264966159,
+          "disparate_impact_ratio": 0.9248253376804845,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.0817160367722165,
+          "equalized_odds_diff": 0.0817160367722165,
+          "brier_by_group": {
+            "urbana": 0.060808322945053596,
+            "rural": 0.07069808934291656
+          }
+        },
+        "provincia": {
+          "per_group": {
+            "Azuay": {
+              "auc": 0.7110177404295052,
+              "n": 381,
+              "ks": 0.3553921568627451
+            },
+            "otras": {
+              "auc": 0.8518949081608929,
+              "n": 435,
+              "ks": 0.5896884445477796
+            },
+            "Pichincha": {
+              "auc": 0.828306342780027,
+              "n": 622,
+              "ks": 0.5408232118758435
+            },
+            "Loja": {
+              "auc": 0.8596618608028213,
+              "n": 342,
+              "ks": 0.5879058188984545
+            },
+            "Guayas": {
+              "auc": 0.8046692890442891,
+              "n": 620,
+              "ks": 0.486013986013986
+            }
+          },
+          "approval_rate": {
+            "Azuay": 0.6929133858267716,
+            "otras": 0.6965517241379311,
+            "Pichincha": 0.6945337620578778,
+            "Loja": 0.6608187134502924,
+            "Guayas": 0.6516129032258065
+          },
+          "demographic_parity_diff": 0.044938820912124644,
+          "disparate_impact_ratio": 0.9354838709677419,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.2553763440860215,
+          "equalized_odds_diff": 0.2553763440860215,
+          "brier_by_group": {
+            "Azuay": 0.05690832501240052,
+            "otras": 0.07430914823153478,
+            "Pichincha": 0.0669603329782719,
+            "Loja": 0.05941323605446457,
+            "Guayas": 0.06275019151329438
+          }
+        }
+      },
+      "proxy_detection_auc": {
+        "sexo": 0.5554269629514365,
+        "zona_residencia": 1.0,
+        "provincia": 0.5127939192488399
+      }
+    },
+    "C0": {
+      "arm": "C0",
+      "n_vars": 8,
+      "fairness_by_group": {
+        "sexo": {
+          "per_group": {
+            "F": {
+              "auc": 0.7912565117017534,
+              "n": 1178,
+              "ks": 0.44525021240806384
+            },
+            "M": {
+              "auc": 0.8418237141735375,
+              "n": 1222,
+              "ks": 0.5630153121319199
+            }
+          },
+          "approval_rate": {
+            "F": 0.7376910016977929,
+            "M": 0.73240589198036
+          },
+          "demographic_parity_diff": 0.005285109717432901,
+          "disparate_impact_ratio": 0.9928356050090495,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.12059123343527012,
+          "equalized_odds_diff": 0.12059123343527012,
+          "brier_by_group": {
+            "F": 0.07105908779472402,
+            "M": 0.0579099015733683
+          }
+        },
+        "zona_residencia": {
+          "per_group": {
+            "urbana": {
+              "auc": 0.7922668240850059,
+              "n": 1496,
+              "ks": 0.4698412698412699
+            },
+            "rural": {
+              "auc": 0.84275177500517,
+              "n": 904,
+              "ks": 0.554739091473082
+            }
+          },
+          "approval_rate": {
+            "urbana": 0.7413101604278075,
+            "rural": 0.7245575221238938
+          },
+          "demographic_parity_diff": 0.016752638303913714,
+          "disparate_impact_ratio": 0.9774013102771372,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.13462717058222673,
+          "equalized_odds_diff": 0.13462717058222673,
+          "brier_by_group": {
+            "urbana": 0.06081017001017663,
+            "rural": 0.07024501195754061
+          }
+        },
+        "provincia": {
+          "per_group": {
+            "Azuay": {
+              "auc": 0.7031979458450047,
+              "n": 381,
+              "ks": 0.3326330532212885
+            },
+            "otras": {
+              "auc": 0.8510230179028133,
+              "n": 435,
+              "ks": 0.5766100906765868
+            },
+            "Pichincha": {
+              "auc": 0.8268218623481782,
+              "n": 622,
+              "ks": 0.5288124156545209
+            },
+            "Loja": {
+              "auc": 0.8638108080074681,
+              "n": 342,
+              "ks": 0.5880095425785707
+            },
+            "Guayas": {
+              "auc": 0.7998251748251749,
+              "n": 620,
+              "ks": 0.4810606060606061
+            }
+          },
+          "approval_rate": {
+            "Azuay": 0.7217847769028871,
+            "otras": 0.7609195402298851,
+            "Pichincha": 0.752411575562701,
+            "Loja": 0.6988304093567251,
+            "Guayas": 0.7274193548387097
+          },
+          "demographic_parity_diff": 0.062089130873159926,
+          "disparate_impact_ratio": 0.9184025017225844,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.19086021505376338,
+          "equalized_odds_diff": 0.19086021505376338,
+          "brier_by_group": {
+            "Azuay": 0.0564459213755032,
+            "otras": 0.07471693111374297,
+            "Pichincha": 0.06641477849369021,
+            "Loja": 0.05928502075040574,
+            "Guayas": 0.06271012055900316
+          }
+        }
+      },
+      "proxy_detection_auc": {
+        "sexo": 0.503599126373031,
+        "zona_residencia": 0.6112775661350622,
+        "provincia": 0.5127251979354671
+      }
+    },
+    "C1": {
+      "arm": "C1",
+      "n_vars": 8,
+      "fairness_by_group": {
+        "sexo": {
+          "per_group": {
+            "F": {
+              "auc": 0.7967233374241554,
+              "n": 1178,
+              "ks": 0.46032045725663184
+            },
+            "M": {
+              "auc": 0.8455045151158226,
+              "n": 1222,
+              "ks": 0.5675304279544562
+            }
+          },
+          "approval_rate": {
+            "F": 0.6918505942275042,
+            "M": 0.7029459901800328
+          },
+          "demographic_parity_diff": 0.01109539595252862,
+          "disparate_impact_ratio": 0.984215862800943,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.09164118246687047,
+          "equalized_odds_diff": 0.09164118246687047,
+          "brier_by_group": {
+            "F": 0.07133670678540681,
+            "M": 0.05792209180016569
+          }
+        },
+        "zona_residencia": {
+          "per_group": {
+            "urbana": {
+              "auc": 0.7968450741178015,
+              "n": 1496,
+              "ks": 0.46046176046176046
+            },
+            "rural": {
+              "auc": 0.8470531467567382,
+              "n": 904,
+              "ks": 0.5630109602260978
+            }
+          },
+          "approval_rate": {
+            "urbana": 0.7058823529411764,
+            "rural": 0.6836283185840708
+          },
+          "demographic_parity_diff": 0.0222540343571056,
+          "disparate_impact_ratio": 0.9684734513274337,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.10684371807967308,
+          "equalized_odds_diff": 0.10684371807967308,
+          "brier_by_group": {
+            "urbana": 0.06087348705972402,
+            "rural": 0.07051847359697408
+          }
+        },
+        "provincia": {
+          "per_group": {
+            "Azuay": {
+              "auc": 0.7142857142857143,
+              "n": 381,
+              "ks": 0.351890756302521
+            },
+            "otras": {
+              "auc": 0.8545105789351314,
+              "n": 435,
+              "ks": 0.5842827249476865
+            },
+            "Pichincha": {
+              "auc": 0.8276990553306343,
+              "n": 622,
+              "ks": 0.5071524966261809
+            },
+            "Loja": {
+              "auc": 0.8610102686443315,
+              "n": 342,
+              "ks": 0.5978632921896068
+            },
+            "Guayas": {
+              "auc": 0.8132284382284383,
+              "n": 620,
+              "ks": 0.5418123543123543
+            }
+          },
+          "approval_rate": {
+            "Azuay": 0.7034120734908136,
+            "otras": 0.728735632183908,
+            "Pichincha": 0.7090032154340836,
+            "Loja": 0.6549707602339181,
+            "Guayas": 0.6838709677419355
+          },
+          "demographic_parity_diff": 0.07376487194998993,
+          "disparate_impact_ratio": 0.8987769107310863,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.2553763440860215,
+          "equalized_odds_diff": 0.2553763440860215,
+          "brier_by_group": {
+            "Azuay": 0.05669859290228154,
+            "otras": 0.07426736119225276,
+            "Pichincha": 0.06714259736945354,
+            "Loja": 0.060087168381436316,
+            "Guayas": 0.062249134852195444
+          }
+        }
+      },
+      "proxy_detection_auc": {
+        "sexo": 0.5156323375356717,
+        "zona_residencia": 0.6095709502626473,
+        "provincia": 0.4947681379055914
+      }
+    },
+    "C2": {
+      "arm": "C2",
+      "n_vars": 8,
+      "fairness_by_group": {
+        "sexo": {
+          "per_group": {
+            "F": {
+              "auc": 0.7967233374241554,
+              "n": 1178,
+              "ks": 0.46032045725663184
+            },
+            "M": {
+              "auc": 0.8455045151158226,
+              "n": 1222,
+              "ks": 0.5675304279544562
+            }
+          },
+          "approval_rate": {
+            "F": 0.6918505942275042,
+            "M": 0.7029459901800328
+          },
+          "demographic_parity_diff": 0.01109539595252862,
+          "disparate_impact_ratio": 0.984215862800943,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.09164118246687047,
+          "equalized_odds_diff": 0.09164118246687047,
+          "brier_by_group": {
+            "F": 0.07133670678540681,
+            "M": 0.05792209180016569
+          }
+        },
+        "zona_residencia": {
+          "per_group": {
+            "urbana": {
+              "auc": 0.7968450741178015,
+              "n": 1496,
+              "ks": 0.46046176046176046
+            },
+            "rural": {
+              "auc": 0.8470531467567382,
+              "n": 904,
+              "ks": 0.5630109602260978
+            }
+          },
+          "approval_rate": {
+            "urbana": 0.7058823529411764,
+            "rural": 0.6836283185840708
+          },
+          "demographic_parity_diff": 0.0222540343571056,
+          "disparate_impact_ratio": 0.9684734513274337,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.10684371807967308,
+          "equalized_odds_diff": 0.10684371807967308,
+          "brier_by_group": {
+            "urbana": 0.06087348705972402,
+            "rural": 0.07051847359697408
+          }
+        },
+        "provincia": {
+          "per_group": {
+            "Azuay": {
+              "auc": 0.7142857142857143,
+              "n": 381,
+              "ks": 0.351890756302521
+            },
+            "otras": {
+              "auc": 0.8545105789351314,
+              "n": 435,
+              "ks": 0.5842827249476865
+            },
+            "Pichincha": {
+              "auc": 0.8276990553306343,
+              "n": 622,
+              "ks": 0.5071524966261809
+            },
+            "Loja": {
+              "auc": 0.8610102686443315,
+              "n": 342,
+              "ks": 0.5978632921896068
+            },
+            "Guayas": {
+              "auc": 0.8132284382284383,
+              "n": 620,
+              "ks": 0.5418123543123543
+            }
+          },
+          "approval_rate": {
+            "Azuay": 0.7034120734908136,
+            "otras": 0.728735632183908,
+            "Pichincha": 0.7090032154340836,
+            "Loja": 0.6549707602339181,
+            "Guayas": 0.6838709677419355
+          },
+          "demographic_parity_diff": 0.07376487194998993,
+          "disparate_impact_ratio": 0.8987769107310863,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.2553763440860215,
+          "equalized_odds_diff": 0.2553763440860215,
+          "brier_by_group": {
+            "Azuay": 0.05669859290228154,
+            "otras": 0.07426736119225276,
+            "Pichincha": 0.06714259736945354,
+            "Loja": 0.060087168381436316,
+            "Guayas": 0.062249134852195444
+          }
+        }
+      },
+      "proxy_detection_auc": {
+        "sexo": 0.5156323375356717,
+        "zona_residencia": 0.6095709502626473,
+        "provincia": 0.4947681379055914
+      }
+    }
+  },
+  "level_b": {
+    "A0b": {
+      "arm": "A0b",
+      "n_vars": 45,
+      "fairness_by_group": {
+        "sexo": {
+          "per_group": {
+            "F": {
+              "auc": 0.793753915603196,
+              "n": 1178,
+              "ks": 0.4724126981402494
+            },
+            "M": {
+              "auc": 0.8421868865331762,
+              "n": 1222,
+              "ks": 0.5664114644680016
+            }
+          },
+          "approval_rate": {
+            "F": 0.6298811544991512,
+            "M": 0.6563011456628478
+          },
+          "demographic_parity_diff": 0.026419991163696643,
+          "disparate_impact_ratio": 0.959744103239355,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.06462793068297656,
+          "equalized_odds_diff": 0.06462793068297656,
+          "brier_by_group": {
+            "F": 0.07229566511643476,
+            "M": 0.05823614712488935
+          }
+        },
+        "zona_residencia": {
+          "per_group": {
+            "urbana": {
+              "auc": 0.7968253968253968,
+              "n": 1496,
+              "ks": 0.4756132756132756
+            },
+            "rural": {
+              "auc": 0.8399117667333013,
+              "n": 904,
+              "ks": 0.5555800647963052
+            }
+          },
+          "approval_rate": {
+            "urbana": 0.6684491978609626,
+            "rural": 0.6017699115044248
+          },
+          "demographic_parity_diff": 0.06667928635653775,
+          "disparate_impact_ratio": 0.9002477876106195,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.10153217568947903,
+          "equalized_odds_diff": 0.10153217568947903,
+          "brier_by_group": {
+            "urbana": 0.06094212889296131,
+            "rural": 0.07207902706847878
+          }
+        },
+        "provincia": {
+          "per_group": {
+            "Azuay": {
+              "auc": 0.7045985060690944,
+              "n": 381,
+              "ks": 0.32878151260504196
+            },
+            "otras": {
+              "auc": 0.8490467333178331,
+              "n": 435,
+              "ks": 0.6181120669611718
+            },
+            "Pichincha": {
+              "auc": 0.8291835357624832,
+              "n": 622,
+              "ks": 0.5534412955465587
+            },
+            "Loja": {
+              "auc": 0.8593506897624729,
+              "n": 342,
+              "ks": 0.6073021470801785
+            },
+            "Guayas": {
+              "auc": 0.8086392773892774,
+              "n": 620,
+              "ks": 0.5049533799533799
+            }
+          },
+          "approval_rate": {
+            "Azuay": 0.6640419947506562,
+            "otras": 0.6643678160919539,
+            "Pichincha": 0.652733118971061,
+            "Loja": 0.6228070175438596,
+            "Guayas": 0.6177419354838709
+          },
+          "demographic_parity_diff": 0.04662588060808304,
+          "disparate_impact_ratio": 0.929819176247349,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.2876344086021505,
+          "equalized_odds_diff": 0.2876344086021505,
+          "brier_by_group": {
+            "Azuay": 0.058813323049994745,
+            "otras": 0.07629978080011117,
+            "Pichincha": 0.06618506725442665,
+            "Loja": 0.06218940014151355,
+            "Guayas": 0.061765641746818666
+          }
+        }
+      },
+      "proxy_detection_auc": {
+        "sexo": 0.5374320257642152,
+        "zona_residencia": 1.0,
+        "provincia": 0.493435306117282
+      }
+    },
+    "B0b": {
+      "arm": "B0b",
+      "n_vars": 18,
+      "fairness_by_group": {
+        "sexo": {
+          "per_group": {
+            "F": {
+              "auc": 0.794766608594159,
+              "n": 1178,
+              "ks": 0.4589902249379941
+            },
+            "M": {
+              "auc": 0.8389477817039654,
+              "n": 1222,
+              "ks": 0.5541813898704359
+            }
+          },
+          "approval_rate": {
+            "F": 0.6205432937181664,
+            "M": 0.6399345335515548
+          },
+          "demographic_parity_diff": 0.01939123983338842,
+          "disparate_impact_ratio": 0.9696980881375951,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.09408766564729865,
+          "equalized_odds_diff": 0.09408766564729865,
+          "brier_by_group": {
+            "F": 0.07203615218869096,
+            "M": 0.05839035714246491
+          }
+        },
+        "zona_residencia": {
+          "per_group": {
+            "urbana": {
+              "auc": 0.792411124229306,
+              "n": 1496,
+              "ks": 0.4561327561327561
+            },
+            "rural": {
+              "auc": 0.8441166333494176,
+              "n": 904,
+              "ks": 0.5552629764941063
+            }
+          },
+          "approval_rate": {
+            "urbana": 0.6370320855614973,
+            "rural": 0.6194690265486726
+          },
+          "demographic_parity_diff": 0.017563059012824622,
+          "disparate_impact_ratio": 0.9724298674887873,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.06996935648621039,
+          "equalized_odds_diff": 0.06996935648621039,
+          "brier_by_group": {
+            "urbana": 0.061060157507705735,
+            "rural": 0.07175399123323262
+          }
+        },
+        "provincia": {
+          "per_group": {
+            "Azuay": {
+              "auc": 0.7023809523809523,
+              "n": 381,
+              "ks": 0.3539915966386554
+            },
+            "otras": {
+              "auc": 0.8470704487328528,
+              "n": 435,
+              "ks": 0.5868402697047198
+            },
+            "Pichincha": {
+              "auc": 0.8362348178137652,
+              "n": 622,
+              "ks": 0.5532388663967611
+            },
+            "Loja": {
+              "auc": 0.8618400580852609,
+              "n": 342,
+              "ks": 0.5944404107457733
+            },
+            "Guayas": {
+              "auc": 0.7996066433566433,
+              "n": 620,
+              "ks": 0.4788752913752914
+            }
+          },
+          "approval_rate": {
+            "Azuay": 0.6377952755905512,
+            "otras": 0.6643678160919539,
+            "Pichincha": 0.635048231511254,
+            "Loja": 0.5994152046783625,
+            "Guayas": 0.614516129032258
+          },
+          "demographic_parity_diff": 0.06495261141359143,
+          "disparate_impact_ratio": 0.9022339585989194,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.2876344086021505,
+          "equalized_odds_diff": 0.2876344086021505,
+          "brier_by_group": {
+            "Azuay": 0.05804070901038382,
+            "otras": 0.07670445431954528,
+            "Pichincha": 0.06589415617468636,
+            "Loja": 0.06070591448568315,
+            "Guayas": 0.06287752911234366
+          }
+        }
+      },
+      "proxy_detection_auc": {
+        "sexo": 0.5354389947732432,
+        "zona_residencia": 0.6007450546590318,
+        "provincia": 0.49223901272791065
+      }
+    },
+    "C0b": {
+      "arm": "C0b",
+      "n_vars": 8,
+      "fairness_by_group": {
+        "sexo": {
+          "per_group": {
+            "F": {
+              "auc": 0.7759631311094138,
+              "n": 1178,
+              "ks": 0.4467949983264819
+            },
+            "M": {
+              "auc": 0.8404691794267766,
+              "n": 1222,
+              "ks": 0.5588339222614842
+            }
+          },
+          "approval_rate": {
+            "F": 0.6926994906621392,
+            "M": 0.7054009819967266
+          },
+          "demographic_parity_diff": 0.012701491334587423,
+          "disparate_impact_ratio": 0.9819939415187171,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.14862385321100924,
+          "equalized_odds_diff": 0.14862385321100924,
+          "brier_by_group": {
+            "F": 0.07356044895225798,
+            "M": 0.05866504369918961
+          }
+        },
+        "zona_residencia": {
+          "per_group": {
+            "urbana": {
+              "auc": 0.7793716384625476,
+              "n": 1496,
+              "ks": 0.44646464646464645
+            },
+            "rural": {
+              "auc": 0.8416350727235127,
+              "n": 904,
+              "ks": 0.5676569931757083
+            }
+          },
+          "approval_rate": {
+            "urbana": 0.71524064171123,
+            "rural": 0.6725663716814159
+          },
+          "demographic_parity_diff": 0.042674270029814165,
+          "disparate_impact_ratio": 0.9403357869489701,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.2041879468845761,
+          "equalized_odds_diff": 0.2041879468845761,
+          "brier_by_group": {
+            "urbana": 0.06182446646576592,
+            "rural": 0.07284678145285818
+          }
+        },
+        "provincia": {
+          "per_group": {
+            "Azuay": {
+              "auc": 0.6667833800186741,
+              "n": 381,
+              "ks": 0.3452380952380953
+            },
+            "otras": {
+              "auc": 0.8397465705649848,
+              "n": 435,
+              "ks": 0.5476052080911415
+            },
+            "Pichincha": {
+              "auc": 0.838697705802969,
+              "n": 622,
+              "ks": 0.5759109311740891
+            },
+            "Loja": {
+              "auc": 0.8382947826988902,
+              "n": 342,
+              "ks": 0.5460014521315215
+            },
+            "Guayas": {
+              "auc": 0.7949446386946387,
+              "n": 620,
+              "ks": 0.5011655011655012
+            }
+          },
+          "approval_rate": {
+            "Azuay": 0.7034120734908136,
+            "otras": 0.7149425287356321,
+            "Pichincha": 0.7090032154340836,
+            "Loja": 0.672514619883041,
+            "Guayas": 0.6903225806451613
+          },
+          "demographic_parity_diff": 0.04242790885259118,
+          "disparate_impact_ratio": 0.9406554972640606,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.22311827956989239,
+          "equalized_odds_diff": 0.22311827956989239,
+          "brier_by_group": {
+            "Azuay": 0.058251315119507416,
+            "otras": 0.07776010900793912,
+            "Pichincha": 0.06582817249946486,
+            "Loja": 0.06391309287943894,
+            "Guayas": 0.06374208504475565
+          }
+        }
+      },
+      "proxy_detection_auc": {
+        "sexo": 0.5308749607506967,
+        "zona_residencia": 0.5746045501869292,
+        "provincia": 0.48571500909653176
+      }
+    },
+    "C2b": {
+      "arm": "C2b",
+      "n_vars": 8,
+      "fairness_by_group": {
+        "sexo": {
+          "per_group": {
+            "F": {
+              "auc": 0.7758601453815192,
+              "n": 1178,
+              "ks": 0.43218818925343927
+            },
+            "M": {
+              "auc": 0.84195131527287,
+              "n": 1222,
+              "ks": 0.5506478209658422
+            }
+          },
+          "approval_rate": {
+            "F": 0.7088285229202037,
+            "M": 0.7111292962356792
+          },
+          "demographic_parity_diff": 0.0023007733154755128,
+          "disparate_impact_ratio": 0.9967646202629332,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.12446483180428136,
+          "equalized_odds_diff": 0.12446483180428136,
+          "brier_by_group": {
+            "F": 0.07321147583227791,
+            "M": 0.05825748653373057
+          }
+        },
+        "zona_residencia": {
+          "per_group": {
+            "urbana": {
+              "auc": 0.7757378984651712,
+              "n": 1496,
+              "ks": 0.429004329004329
+            },
+            "rural": {
+              "auc": 0.8457985799958639,
+              "n": 904,
+              "ks": 0.5633280485282968
+            }
+          },
+          "approval_rate": {
+            "urbana": 0.7252673796791445,
+            "rural": 0.6847345132743363
+          },
+          "demographic_parity_diff": 0.04053286640480813,
+          "disparate_impact_ratio": 0.9441132090860894,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.159244126659857,
+          "equalized_odds_diff": 0.159244126659857,
+          "brier_by_group": {
+            "urbana": 0.06168363699033329,
+            "rural": 0.07207416608086675
+          }
+        },
+        "provincia": {
+          "per_group": {
+            "Azuay": {
+              "auc": 0.6772875816993464,
+              "n": 381,
+              "ks": 0.35364145658263313
+            },
+            "otras": {
+              "auc": 0.8387003022552895,
+              "n": 435,
+              "ks": 0.5493489886073006
+            },
+            "Pichincha": {
+              "auc": 0.8388326585695007,
+              "n": 622,
+              "ks": 0.5724021592442645
+            },
+            "Loja": {
+              "auc": 0.8415102167824915,
+              "n": 342,
+              "ks": 0.542578570687688
+            },
+            "Guayas": {
+              "auc": 0.792358682983683,
+              "n": 620,
+              "ks": 0.47348484848484845
+            }
+          },
+          "approval_rate": {
+            "Azuay": 0.6981627296587927,
+            "otras": 0.7333333333333334,
+            "Pichincha": 0.7202572347266881,
+            "Loja": 0.6842105263157895,
+            "Guayas": 0.7048387096774194
+          },
+          "demographic_parity_diff": 0.0491228070175439,
+          "disparate_impact_ratio": 0.9330143540669856,
+          "disparate_impact_flag_below_80pct": false,
+          "equal_opportunity_diff": 0.19086021505376338,
+          "equalized_odds_diff": 0.19086021505376338,
+          "brier_by_group": {
+            "Azuay": 0.057972072053545605,
+            "otras": 0.07676502803109503,
+            "Pichincha": 0.0657349319348613,
+            "Loja": 0.06297328011599307,
+            "Guayas": 0.06375746929929284
+          }
+        }
+      },
+      "proxy_detection_auc": {
+        "sexo": 0.5080728522642333,
+        "zona_residencia": 0.5829365032416828,
+        "provincia": 0.4749131037076957
+      }
+    }
+  }
+}
