@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+.pytest_cache/
+data/raw/*.parquet
+data/interim/*.parquet
+data/processed/*.parquet
+!data/processed/dataset_seed42.parquet
+reports/cache/*.json
+reports/cache/*.joblib
+.DS_Store
+*.egg-info/
+.vercel
+node_modules/

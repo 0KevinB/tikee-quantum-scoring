@@ -1,0 +1,29 @@
+# experiments.yaml — definición declarativa de los brazos (ARCHITECTURE.md §8.1)
+
+level_a:
+  n_variables: 18
+  arms:
+    - {id: A0,  selection: none,          classifier: logreg}
+    - {id: A1,  selection: none,          classifier: xgboost, nested_cv: true}
+    - {id: B0,  selection: lasso,         classifier: logreg}
+    - {id: B0x, selection: lasso,         classifier: xgboost}
+    - {id: B1,  selection: stepwise_aic,  classifier: logreg}
+    - {id: C0,  selection: qubo_sa,       classifier: logreg}
+    - {id: C0x, selection: qubo_sa,       classifier: xgboost}
+    - {id: C1,  selection: qubo_exact,    classifier: logreg}
+    - {id: C2,  selection: qubo_milp,     classifier: logreg}
+    - {id: C3,  selection: qubo_qaoa,     classifier: logreg}
+    - {id: R,   selection: random_k,      classifier: logreg, repetitions: 100}
+
+level_b:
+  n_variables: 45
+  arms:
+    - {id: A0b, selection: none,       classifier: logreg}
+    - {id: A1b, selection: none,       classifier: xgboost}
+    - {id: B0b, selection: lasso,      classifier: logreg}
+    - {id: B1b, selection: stepwise_aic, classifier: logreg}
+    - {id: C0b, selection: qubo_sa,    classifier: logreg}
+    - {id: C2b, selection: qubo_milp,  classifier: logreg, time_limit_s: 600}
+    - {id: C4b, selection: qubo_tabu,  classifier: logreg}
+    - {id: Rb,  selection: random_k,   classifier: logreg, repetitions: 100}
+  excluded: [C1b, C3b]   # ExactSolver y QAOA imposibles en N=45, ver §7.0

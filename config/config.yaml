@@ -1,0 +1,64 @@
+# config.yaml — semillas, tamaños, calibración, rutas
+# sigma se calibra en F1 (PLAN.md §4.1, ARCHITECTURE.md §4.4). null hasta cerrar checkpoint F1.
+
+seeds:
+  primary: 42
+  multiseed: [42, 101, 202, 303, 404, 505, 606, 707, 808, 909]
+  nested_cv_subset: [42, 101, 202]
+
+data:
+  n_seed_rows: 2000
+  n_synthetic_rows: 8000
+  tasa_base_default: 0.08
+  tasa_base_tolerance: 0.005
+  sigma_ruido: 6.2           # calibrado en F1 (bisección + ajuste manual), ver reports/cache/f1_sigma_calibration.json
+  sigma_search_start: 1.3
+  auc_band: [0.72, 0.82]
+  correlation_tolerance: 0.07
+  split_test_size: 0.30
+
+qubo:
+  alpha: 1.0
+  beta_grid: [0.25, 0.5, 1.0, 2.0]
+  k_grid_level_a: [5, 6, 7, 8, 9, 10]
+  k_grid_level_b: [6, 8, 10, 12, 15, 20]
+  cv_folds: 5
+  milp_time_limit_seconds_level_b: 600
+
+qaoa:
+  p_values: [1, 2, 3]
+  optimizer: COBYLA
+  backend_method: statevector
+
+annealer:
+  num_reads: 1000
+  num_sweeps: 1000
+
+xgboost_nested_cv:
+  outer_folds: 5
+  inner_folds: 3
+  n_iter_random_search: 30
+  param_distributions:
+    max_depth: [2, 6]
+    learning_rate: [0.01, 0.3]
+    n_estimators: [100, 600]
+    subsample: [0.6, 1.0]
+    colsample_bytree: [0.6, 1.0]
+    min_child_weight: [1, 20]
+    reg_lambda: [0.1, 10]
+
+paths:
+  raw: data/raw
+  interim: data/interim
+  processed: data/processed
+  reports: reports
+  cache: reports/cache
+  figures: reports/figures
+  fidelity: reports/fidelity
+
+fidelity_thresholds:
+  quality_column_shapes: 0.85
+  quality_column_pair_trends: 0.80
+  diagnostic: 1.00
+  new_row_synthesis: 0.95
+  target_correlation_mae: 0.05

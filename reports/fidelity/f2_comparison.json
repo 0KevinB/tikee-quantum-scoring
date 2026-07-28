@@ -1,0 +1,101 @@
+{
+  "production_gaussian_copula": {
+    "sdmetrics": {
+      "quality_overall": 0.9674255255966124,
+      "quality_column_shapes": 0.9622986111111109,
+      "quality_column_pair_trends": 0.9725524400821141,
+      "diagnostic_overall": 1.0,
+      "diagnostic_properties": [
+        {
+          "Property": "Data Validity",
+          "Score": 1.0
+        },
+        {
+          "Property": "Data Structure",
+          "Score": 1.0
+        }
+      ]
+    },
+    "new_row_synthesis": 1.0,
+    "nearest_record_distance": {
+      "mean": 2.1549791537141343,
+      "median": 2.0146686345152767,
+      "p05": 1.4459195798812148,
+      "min": 0.8942380662546329
+    },
+    "target_correlation_mae_raw_13_pairs": 0.06175133641483446,
+    "target_correlation_mae_excl_known_exception_12_pairs": 0.024761406239456715
+  },
+  "synthesizer_comparison": [
+    {
+      "method": "gaussian_copula",
+      "converged": true,
+      "wall_time_s": 158.8163837500033,
+      "engine": "sdv:gaussian_copula",
+      "target_correlation_mae": 0.024761406239456715,
+      "quality_overall": 0.9674255255966124,
+      "quality_column_shapes": 0.9622986111111109,
+      "quality_column_pair_trends": 0.9725524400821141,
+      "diagnostic_overall": 1.0,
+      "diagnostic_properties": [
+        {
+          "Property": "Data Validity",
+          "Score": 1.0
+        },
+        {
+          "Property": "Data Structure",
+          "Score": 1.0
+        }
+      ]
+    },
+    {
+      "method": "ctgan",
+      "converged": true,
+      "wall_time_s": 26.907813041005284,
+      "engine": "sdv:ctgan",
+      "target_correlation_mae": 0.4842004387152145,
+      "quality_overall": 0.8631555478530509,
+      "quality_column_shapes": 0.8489513888888888,
+      "quality_column_pair_trends": 0.8773597068172131,
+      "diagnostic_overall": 1.0,
+      "diagnostic_properties": [
+        {
+          "Property": "Data Validity",
+          "Score": 1.0
+        },
+        {
+          "Property": "Data Structure",
+          "Score": 1.0
+        }
+      ]
+    },
+    {
+      "method": "tvae",
+      "converged": true,
+      "wall_time_s": 12.62193920800928,
+      "engine": "sdv:tvae",
+      "target_correlation_mae": 0.12168480242366714,
+      "quality_overall": 0.7763689611164657,
+      "quality_column_shapes": 0.7802847222222222,
+      "quality_column_pair_trends": 0.772453200010709,
+      "diagnostic_overall": 1.0,
+      "diagnostic_properties": [
+        {
+          "Property": "Data Validity",
+          "Score": 1.0
+        },
+        {
+          "Property": "Data Structure",
+          "Score": 1.0
+        }
+      ]
+    }
+  ],
+  "checkpoint_f2": {
+    "quality_ok": true,
+    "diagnostic_ok": true,
+    "new_row_synthesis_ok": true,
+    "correlation_mae_ok": true,
+    "all_ok": true
+  }
+}

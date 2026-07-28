@@ -1,0 +1,160 @@
+# schema.yaml — Fuente de verdad de las 18 variables predictoras (Nivel A)
+# Ver ARCHITECTURE.md §4.1, §4.2, §4.3, §4.4
+
+variables:
+  - name: edad
+    type: int
+    range: [18, 75]
+    block: C
+    relevance: relevant
+  - name: zona_residencia
+    type: categorical
+    categories: [urbana, rural]
+    block: D
+    relevance: irrelevant
+    protected_link: true
+  - name: nivel_educacion
+    type: ordinal
+    range: [1, 5]
+    block: D
+    relevance: irrelevant
+  - name: carga_familiar
+    type: int
+    range: [0, 6]
+    block: C
+    relevance: relevant
+  - name: tipo_empleo
+    type: categorical
+    categories: [dependiente_formal, independiente_informal, agricultor, comerciante]
+    block: C
+    relevance: relevant
+  - name: antiguedad_laboral_meses
+    type: int
+    range: [0, 360]
+    block: C
+    relevance: relevant
+  - name: antiguedad_socio_meses
+    type: int
+    range: [1, 300]
+    block: C
+    relevance: relevant
+  - name: ingreso_mensual
+    type: float
+    unit: USD
+    range: [460, 3500]
+    block: A
+    relevance: instrumental
+  - name: gastos_mensuales
+    type: float
+    unit: USD
+    range: [200, 3000]
+    block: A
+    relevance: instrumental
+  - name: score_buro
+    type: int
+    range: [1, 999]
+    block: B
+    relevance: relevant
+  - name: num_operaciones_vigentes
+    type: int
+    range: [0, 8]
+    block: B
+    relevance: relevant
+  - name: deuda_total_sistema
+    type: float
+    unit: USD
+    range: [0, 40000]
+    block: B
+    relevance: instrumental
+  - name: peor_calificacion_12m
+    type: ordinal
+    range: [1, 9]
+    block: B
+    relevance: relevant
+  - name: dias_mora_max_12m
+    type: int
+    range: [0, 180]
+    block: B
+    relevance: relevant
+  - name: monto_solicitado
+    type: float
+    unit: USD
+    range: [500, 25000]
+    block: A
+    relevance: instrumental
+  - name: plazo_meses
+    type: categorical
+    categories: [6, 12, 18, 24, 36, 48, 60]
+    block: A
+    relevance: instrumental
+  - name: ratio_cuota_ingreso
+    type: float
+    range: [0.02, 0.90]
+    block: A
+    relevance: relevant
+    derived: true
+  - name: ratio_deuda_ingreso
+    type: float
+    range: [0, 20]
+    block: A
+    relevance: relevant
+    derived: true
+
+auxiliary:
+  - name: cuota_estimada
+    formula: "monto * (i/12) / (1 - (1 + i/12) ** (-plazo))"
+    i_anual: 0.165
+
+protected_attributes:
+  - name: sexo
+    categories: [M, F]
+  - name: provincia
+    categories: [Loja, Pichincha, Guayas, Azuay, otras]
+  - name: id_solicitud
+    type: identifier
+
+target_correlations:
+  # ver ARCHITECTURE.md §4.2 — tolerancia +-0.07 en validate.py
+  - {a: score_buro, b: peor_calificacion_12m, rho: -0.85}
+  - {a: score_buro, b: dias_mora_max_12m, rho: -0.80}
+  - {a: peor_calificacion_12m, b: dias_mora_max_12m, rho: 0.88}
+  - {a: deuda_total_sistema, b: num_operaciones_vigentes, rho: 0.60}
+  - {a: ingreso_mensual, b: gastos_mensuales, rho: 0.75}
+  - {a: ingreso_mensual, b: monto_solicitado, rho: 0.55}
+  - {a: ratio_cuota_ingreso, b: monto_solicitado, rho: 0.65}
+  - {a: ratio_cuota_ingreso, b: ingreso_mensual, rho: -0.45}
+  - {a: ratio_deuda_ingreso, b: deuda_total_sistema, rho: 0.70}
+  - {a: edad, b: antiguedad_laboral_meses, rho: 0.55}
+  - {a: edad, b: antiguedad_socio_meses, rho: 0.40}
+  - {a: edad, b: carga_familiar, rho: 0.30}
+  - {a: nivel_educacion, b: score_buro, rho: 0.0, tolerance_only: true}
+
+hard_constraints:
+  - "antiguedad_laboral_meses <= (edad - 18) * 12"
+
+ground_truth:
+  relevant:
+    - ratio_cuota_ingreso
+    - ratio_deuda_ingreso
+    - score_buro
+    - dias_mora_max_12m
+    - peor_calificacion_12m
+    - num_operaciones_vigentes
+    - antiguedad_socio_meses
+    - antiguedad_laboral_meses
+    - carga_familiar
+    - tipo_empleo
+    - edad
+  irrelevant:
+    - nivel_educacion
+    - zona_residencia
+  instrumental:
+    - ingreso_mensual
+    - gastos_mensuales
+    - monto_solicitado
+    - plazo_meses
+    - deuda_total_sistema
+  collinear_trio:
+    - score_buro
+    - peor_calificacion_12m
+    - dias_mora_max_12m
