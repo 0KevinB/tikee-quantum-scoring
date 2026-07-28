@@ -33,6 +33,26 @@ def solve_qubo_milp(
     cardinality_k: int | None = None,
     time_limit: float | None = None,
 ) -> dict[str, Any]:
+    """Resuelve el QUBO como MILP vía la linealización de Glover (y_ij = x_i·x_j),
+    con HiGHS como backend de `scipy.optimize.milp`. Óptimo certificado, o gap
+    acotado si se corta por `time_limit` (ARCHITECTURE.md §7.3).
+
+    Args:
+        Q: matriz QUBO en formato `{(i,i): valor, (i,j): valor}`.
+        n: número de variables binarias originales (sin contar las auxiliares
+            y_ij que introduce la linealización).
+        cardinality_k: si se da, se agrega `Σx_i = k` como restricción DURA (uso
+            1 de §7.3: óptimo certificado del problema real). Si es None, se
+            resuelve el QUBO penalizado tal cual (uso 2: prueba cruzada de lambda
+            contra el uso 1 — deben coincidir).
+        time_limit: límite de tiempo en segundos para HiGHS; si se corta antes de
+            cerrar, `mip_gap` en el resultado acota qué tan lejos puede estar la
+            solución del óptimo verdadero.
+
+    Returns:
+        dict con `sample` (o None si no hay solución factible), `energy`,
+        `wall_time_s`, `status`, `success`, `mip_gap` y `message`.
+    """
     pairs = _offdiag_pairs(Q, n)
     n_y = len(pairs)
     n_vars = n + n_y

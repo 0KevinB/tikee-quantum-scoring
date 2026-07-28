@@ -10,6 +10,7 @@ from scipy.stats import chi2_contingency, spearmanr
 
 
 def cramers_v(x: pd.Series, y: pd.Series) -> float:
+    """V de Cramér entre dos variables categóricas, en [0,1] (0 = independientes)."""
     table = pd.crosstab(x, y)
     chi2 = chi2_contingency(table)[0]
     n = table.to_numpy().sum()
@@ -21,6 +22,8 @@ def cramers_v(x: pd.Series, y: pd.Series) -> float:
 
 
 def correlation_ratio(categories: pd.Series, values: pd.Series) -> float:
+    """Razón de correlación eta entre una variable categórica y una continua, en
+    [0,1]: raíz de la fracción de varianza de `values` explicada por `categories`."""
     values = values.to_numpy(dtype=float)
     cats = categories.to_numpy()
     overall_mean = values.mean()
@@ -39,6 +42,20 @@ def correlation_ratio(categories: pd.Series, values: pd.Series) -> float:
 def compute_redundancy(
     df_train: pd.DataFrame, variable_order: list[str], categorical_vars: set[str]
 ) -> np.ndarray:
+    """Matriz de redundancia par a par en [0,1], diagonal en cero
+    (ARCHITECTURE.md §6.2). Elige la medida según el tipo de cada par:
+    |Spearman| (continua-continua), V de Cramér (categórica-categórica) o razón
+    de correlación eta (mixto). SOLO debe llamarse con datos de entrenamiento.
+
+    Args:
+        df_train: DataFrame de train con las columnas en `variable_order`.
+        variable_order: orden de variables; fija los índices i,j de la matriz.
+        categorical_vars: subconjunto de `variable_order` a tratar como
+            categóricas.
+
+    Returns:
+        Matriz simétrica `C` de forma (n, n) con `C[i][i] == 0`.
+    """
     n = len(variable_order)
     C = np.zeros((n, n))
     for i in range(n):

@@ -17,6 +17,22 @@ def solve_qubo_sa(
     num_sweeps: int = 1000,
     seed: int | None = None,
 ) -> dict[str, Any]:
+    """Resuelve un QUBO por recocido simulado, heurístico sin garantía de
+    optimalidad (ARCHITECTURE.md §7.1).
+
+    Args:
+        Q: matriz QUBO en formato `{(i,i): valor, (i,j): valor}` (triangular
+            superior), el formato que produce `qubo_builder.build_qubo`.
+        num_reads: número de lecturas/intentos independientes del sampler.
+        num_sweeps: número de sweeps de temperatura por lectura.
+        seed: semilla para reproducibilidad.
+
+    Returns:
+        dict con `sample` (mejor solución binaria), `energy`, `wall_time_s`,
+        `mean_energy` (promedio entre lecturas) y `n_reads_at_best` (cuántas
+        lecturas alcanzaron la mejor energía — proxy de qué tan fácil es el
+        paisaje del problema).
+    """
     sampler = SimulatedAnnealingSampler()
     t0 = time.perf_counter()
     sampleset = sampler.sample_qubo(Q, num_reads=num_reads, num_sweeps=num_sweeps, seed=seed)
@@ -37,4 +53,5 @@ def solve_qubo_sa(
 
 
 def verify_cardinality(sample: dict[int, int], k: int) -> bool:
+    """True si la solución tiene exactamente k variables encendidas."""
     return sum(sample.values()) == k

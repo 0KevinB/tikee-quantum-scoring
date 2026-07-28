@@ -20,6 +20,10 @@ def _z(series: pd.Series) -> pd.Series:
 
 
 def compute_structural_z_partial(df: pd.DataFrame) -> pd.Series:
+    """Logit estructural del ground truth (D3, ARCHITECTURE.md §4.4) sin beta0 ni
+    ruido: la combinación lineal fija de coeficientes de negocio sobre las
+    variables relevantes. `nivel_educacion`, `zona_residencia` y `sexo` tienen
+    coeficiente cero explícito — no entran a esta suma."""
     z = pd.Series(0.0, index=df.index)
     z += 2.20 * _z(df["ratio_cuota_ingreso"])
     z += 0.55 * _z(df["ratio_deuda_ingreso"])
@@ -51,6 +55,26 @@ def calibrate_beta0(
     hi: float = 12.0,
     max_iter: int = 60,
 ) -> tuple[float, np.ndarray]:
+    """Bisección sobre beta0 hasta que `mean(sigmoid(z_partial + beta0 + eps))`
+    caiga dentro de `tol` de `target_rate` (D4: tasa base 8%). `eps` se fija con
+    `seed` una sola vez fuera del bucle para que la bisección sea determinista.
+
+    Args:
+        z_partial: salida de `compute_structural_z_partial`.
+        sigma: desvío del ruido estructural (controla la separabilidad del
+            target; se calibra por fuera, ver `scripts/f1_calibrate_sigma.py`).
+        seed: semilla del ruido `eps`.
+        target_rate: tasa de default objetivo.
+        tol: tolerancia de la bisección sobre la tasa esperada (no confundir con
+            la tolerancia más amplia de la tasa REALIZADA que exige
+            `validate.check_default_rate`).
+        lo, hi: cota inicial de búsqueda de beta0.
+        max_iter: iteraciones máximas de bisección.
+
+    Returns:
+        Tupla `(beta0, p_default)`: el beta0 encontrado y el vector de
+        probabilidades de default resultante (antes de muestrear Bernoulli).
+    """
     rng = np.random.default_rng(seed)
     eps = rng.normal(0, sigma, size=len(z_partial))
     z_arr = z_partial.to_numpy()
@@ -77,6 +101,22 @@ def add_target(
     target_rate: float = 0.08,
     tol: float = 0.002,
 ) -> pd.DataFrame:
+    """Agrega el target sintético a `df`: calibra beta0 y muestrea `default` ~
+    Bernoulli(p_default). Punto de entrada principal de este módulo.
+
+    Args:
+        df: DataFrame con las 18 variables predictoras (de `seed_generator` o
+            `sdv_synthesizer.synthesize`).
+        sigma: desvío del ruido estructural (ya calibrado, ver
+            `config/config.yaml: data.sigma_ruido`).
+        seed: semilla para la calibración de beta0 y el muestreo de `default`.
+        target_rate: tasa de default objetivo (D4).
+        tol: tolerancia de la bisección de beta0.
+
+    Returns:
+        `df` con dos columnas nuevas, `p_default_true` y `default`, y
+        `df.attrs` con `beta0`, `sigma` y `default_rate` (tasa realizada).
+    """
     df = df.copy()
     z_partial = compute_structural_z_partial(df)
     beta0, p_default = calibrate_beta0(z_partial, sigma, seed, target_rate, tol)

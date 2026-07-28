@@ -84,6 +84,28 @@ def _eval_arm(name, X_train, X_test, y_train, y_test, cols, seed, classifier="lo
 
 
 def run_seed(seed: int, xgb_params_a: dict[str, Any], xgb_params_b: dict[str, Any]) -> dict[str, Any]:
+    """Corre el pipeline completo para UNA semilla: genera datos, ajusta el
+    barrido β×k de Nivel A y Nivel B, resuelve los brazos QUBO (SA/Exact/MILP en
+    Nivel A; SA/MILP/Tabú en Nivel B), entrena los brazos clásicos (LASSO,
+    stepwise, sin selección) y el de control aleatorio, y evalúa todos sobre el
+    test de esa semilla. Es la unidad de trabajo que `run_multiseed` repite y
+    cachea 10 veces.
+
+    Args:
+        seed: semilla que gobierna generación de datos, split, y todos los
+            solucionadores estocásticos de esta corrida.
+        xgb_params_a: hiperparámetros fijos de XGBoost para Nivel A (de
+            `train.median_hyperparams` sobre una CV anidada corrida aparte —
+            NUNCA se re-ajustan aquí, D13).
+        xgb_params_b: idem para Nivel B.
+
+    Returns:
+        dict con una clave por brazo (`A0`, `B0`, `C0`, `C1`, `C2`, `R`, ... y su
+        equivalente `*b` de Nivel B), cada una con las métricas de
+        `evaluate.compute_metrics` + `selected_variables`; más
+        `c1_eq_c2_level_a` (bool, el checkpoint de F4 para esta semilla) y
+        `beta_k_star_level_a`/`beta_k_star_level_b`.
+    """
     seed_df = generate_seed_table(seed, 2000)
     synth_df, _ = synthesize(seed_df, method="gaussian_copula", n_sample=8000, seed=seed)
     df = add_target(synth_df, sigma=SIGMA, seed=seed, target_rate=0.08)

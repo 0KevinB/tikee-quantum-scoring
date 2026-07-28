@@ -17,6 +17,13 @@ from scipy.stats import norm
 
 
 class FallbackGaussianCopula:
+    """Sintetizador de respaldo sin dependencia de SDV. Ver docstring del módulo.
+
+    Args:
+        categorical_columns: nombres de columnas a tratar como categóricas
+            (además de las que ya son `dtype == object`).
+    """
+
     def __init__(self, categorical_columns: list[str] | None = None):
         self.categorical_columns = set(categorical_columns or [])
         self.columns_: list[str] = []
@@ -26,6 +33,8 @@ class FallbackGaussianCopula:
         self._rng = np.random.default_rng()
 
     def fit(self, df: pd.DataFrame, seed: int | None = None) -> "FallbackGaussianCopula":
+        """Estima la matriz de correlación latente y guarda los valores/proporciones
+        empíricas necesarias para invertir cada marginal al muestrear."""
         if seed is not None:
             self._rng = np.random.default_rng(seed)
         self.columns_ = list(df.columns)
@@ -55,6 +64,7 @@ class FallbackGaussianCopula:
         return self
 
     def sample(self, n: int, seed: int | None = None) -> pd.DataFrame:
+        """Muestrea `n` filas nuevas de la cópula ajustada. Requiere `fit()` previo."""
         if self.corr_ is None:
             raise RuntimeError("fit() debe llamarse antes de sample()")
         rng = np.random.default_rng(seed) if seed is not None else self._rng

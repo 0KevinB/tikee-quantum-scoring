@@ -21,6 +21,23 @@ def lasso_select(
     seed: int,
     cv: int = 5,
 ) -> dict[str, Any]:
+    """Selección embebida por LASSO (L1): ajusta `LogisticRegressionCV` con C
+    elegido por CV en train, y reporta como "seleccionada" toda variable con al
+    menos una columna transformada de coeficiente no nulo. Brazo B0/B0b.
+
+    Args:
+        X: matriz de features ya transformada (salida de `preprocess.py`).
+        y: etiqueta binaria.
+        variable_groups: mapeo nombre de variable -> índices de columna en X
+            (de `features.preprocess.get_variable_groups`), para poder reportar
+            variables en vez de columnas dummy sueltas.
+        seed: semilla de `LogisticRegressionCV`.
+        cv: número de pliegues para elegir C.
+
+    Returns:
+        dict con `selected_variables`, `selected_columns`, `coef` (todos los
+        coeficientes) y `C` (el hiperparámetro elegido).
+    """
     Cs = np.logspace(-3, 1, 20)
     clf = LogisticRegressionCV(
         Cs=Cs, cv=cv, penalty="l1", solver="liblinear", scoring="roc_auc",
@@ -44,6 +61,22 @@ def stepwise_forward_aic(
     variable_groups: dict[str, list[int]],
     candidate_vars: list[str] | None = None,
 ) -> dict[str, Any]:
+    """Selección stepwise hacia adelante por AIC (statsmodels Logit): en cada paso
+    agrega la variable candidata que más reduce el AIC del modelo, hasta que
+    ninguna lo mejora. Opera a nivel de variable completa (todas sus columnas
+    transformadas entran o salen juntas), no por columna dummy. Brazo B1/B1b.
+
+    Args:
+        X: matriz de features ya transformada.
+        y: etiqueta binaria.
+        variable_groups: mapeo nombre de variable -> índices de columna en X.
+        candidate_vars: subconjunto de variables a considerar; por defecto todas
+            las claves de `variable_groups`.
+
+    Returns:
+        dict con `selected_variables` (en orden de entrada), `selected_columns`
+        y `final_aic`.
+    """
     candidate_vars = list(candidate_vars) if candidate_vars is not None else list(variable_groups.keys())
     selected: list[str] = []
     remaining = list(candidate_vars)

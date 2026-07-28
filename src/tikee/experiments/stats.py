@@ -24,11 +24,39 @@ def average_ranks(score_matrix: pd.DataFrame, higher_is_better: bool = True) -> 
 
 
 def friedman_test(score_matrix: pd.DataFrame) -> dict[str, Any]:
+    """Prueba de Friedman sobre los rangos de cada columna (brazo) a través de
+    las filas (semillas) — sin supuesto de normalidad, apta para comparar >2
+    algoritmos sobre múltiples conjuntos de datos (D12).
+
+    Args:
+        score_matrix: filas = semillas, columnas = brazos, valores = métrica
+            (normalmente AUC).
+
+    Returns:
+        dict con `statistic`, `p_value` y `significant_at_0.05`.
+    """
     stat, p = friedmanchisquare(*[score_matrix[col] for col in score_matrix.columns])
     return {"statistic": float(stat), "p_value": float(p), "significant_at_0.05": bool(p < 0.05)}
 
 
 def nemenyi_posthoc(score_matrix: pd.DataFrame, higher_is_better: bool = True, alpha: float = 0.05) -> dict[str, Any]:
+    """Post-hoc de Nemenyi tras un Friedman significativo: calcula la diferencia
+    crítica (CD) y marca qué pares de brazos difieren más que esa CD en rango
+    promedio — la única forma correcta de decir "A le gana a B" a través de
+    múltiples semillas sin inflar el error tipo I (D12).
+
+    Args:
+        score_matrix: igual que en `friedman_test`.
+        higher_is_better: True si un valor más alto es mejor (rango 1 = mejor).
+        alpha: solo 0.05 está tabulado en `NEMENYI_Q_ALPHA_005`.
+
+    Returns:
+        dict con `critical_difference`, `average_ranks` y `pairs` (una entrada
+        por par de brazos con `rank_diff` y `significant`).
+
+    Raises:
+        ValueError: si `alpha != 0.05` o si el número de brazos no está tabulado.
+    """
     if alpha != 0.05:
         raise ValueError("solo se tabuló q_alpha para alpha=0.05 (D12)")
     k = score_matrix.shape[1]
@@ -49,6 +77,9 @@ def nemenyi_posthoc(score_matrix: pd.DataFrame, higher_is_better: bool = True, a
 
 
 def jaccard_index(subsets: list[set[str]]) -> float:
+    """Índice de Jaccard promedio entre todos los pares de `subsets` (§8.5): una
+    sola cifra que resume qué tan estable es la selección de un método a través
+    de semillas. 1.0 = siempre elige las mismas variables; hacia 0 = muy inestable."""
     if len(subsets) < 2:
         return 1.0
     scores = []
@@ -62,6 +93,8 @@ def jaccard_index(subsets: list[set[str]]) -> float:
 
 
 def selection_frequency(subsets_by_seed: list[list[str]], all_vars: list[str]) -> pd.Series:
+    """Fracción de semillas en que cada variable de `all_vars` fue seleccionada
+    por un método — la base del mapa de calor de estabilidad (§8.5)."""
     counts = pd.Series(0, index=all_vars, dtype=float)
     for subset in subsets_by_seed:
         for v in subset:
@@ -70,6 +103,15 @@ def selection_frequency(subsets_by_seed: list[list[str]], all_vars: list[str]) -
 
 
 def plot_critical_difference(average_ranks_dict: dict[str, float], cd: float, out_path: str) -> None:
+    """Dibuja y guarda el diagrama de diferencia crítica de Nemenyi: un punto
+    por brazo en su rango promedio, con una barra horizontal de longitud `cd`
+    como referencia visual de "distancia significativa".
+
+    Args:
+        average_ranks_dict: salida `average_ranks` de `nemenyi_posthoc`.
+        cd: la `critical_difference` de la misma llamada.
+        out_path: ruta del PNG a escribir.
+    """
     import matplotlib.pyplot as plt
 
     names = list(average_ranks_dict.keys())

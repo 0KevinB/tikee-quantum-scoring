@@ -83,6 +83,25 @@ def synthesize(
     seed: int | None = None,
     ctgan_epochs: int = 300,
 ) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Ajusta un sintetizador sobre `df` (Etapa 2, ARCHITECTURE.md §4.4-4.5) y
+    muestrea `n_sample` filas. Excluye columnas derivadas y el id antes de
+    ajustar, y las recalcula/regenera después de muestrear para no romper su
+    relación exacta con las columnas base.
+
+    Args:
+        df: tabla semilla (de `seed_generator.generate_seed_table`).
+        method: `"gaussian_copula"` (producción, D14), `"ctgan"` o `"tvae"`
+            (solo para la comparación de F2, sin respaldo si SDV falta).
+        n_sample: número de filas a muestrear.
+        seed: semilla del sintetizador y del respaldo sin SDV.
+        ctgan_epochs: épocas de entrenamiento para CTGAN/TVAE.
+
+    Returns:
+        Tupla `(sample, info)`: DataFrame sintético ya con derivadas
+        recalculadas, e `info` con `engine` (motor real usado, incluye
+        `"fallback_copula"` si SDV no estaba disponible), `method`,
+        `wall_time_s` y `n_sample`.
+    """
     t0 = time.perf_counter()
 
     fit_df = df.drop(columns=[c for c in DERIVED_COLUMNS + ["id_solicitud"] if c in df.columns])

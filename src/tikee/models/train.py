@@ -22,12 +22,17 @@ XGB_PARAM_DISTRIBUTIONS = {
 
 
 def train_logreg(X: np.ndarray, y: np.ndarray, seed: int) -> LogisticRegression:
+    """Entrena una regresión logística simple (sin regularización adicional más
+    allá del default de sklearn) sobre las columnas ya seleccionadas por un brazo."""
     clf = LogisticRegression(max_iter=2000, random_state=seed)
     clf.fit(X, y)
     return clf
 
 
 def train_xgboost_fixed(X: np.ndarray, y: np.ndarray, seed: int, params: dict[str, Any]) -> XGBClassifier:
+    """Entrena XGBoost con hiperparámetros ya fijados (no los ajusta). `params`
+    viene de `median_hyperparams` sobre los resultados de `nested_cv_xgboost` —
+    nunca se re-afinan por semilla (D13, anti-criterio de PLAN.md §2.7)."""
     clf = XGBClassifier(
         **params, random_state=seed, eval_metric="auc", n_jobs=-1,
     )
@@ -73,6 +78,10 @@ def nested_cv_xgboost(
 
 
 def median_hyperparams(list_of_best_params: list[dict[str, Any]]) -> dict[str, Any]:
+    """Mediana por hiperparámetro a través de los folds/semillas de la CV
+    anidada, para obtener un único set de hiperparámetros fijos (D13). Redondea
+    a entero los que son de tipo entero en XGBoost (`max_depth`, `n_estimators`,
+    `min_child_weight`); el resto queda en float."""
     keys = list_of_best_params[0].keys()
     out = {}
     for k in keys:

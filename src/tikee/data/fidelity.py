@@ -15,6 +15,15 @@ from tikee.data.validate import TARGET_CORRELATIONS
 
 
 def run_sdmetrics_reports(real_df: pd.DataFrame, synth_df: pd.DataFrame) -> dict[str, Any]:
+    """Corre `QualityReport` y `DiagnosticReport` de SDMetrics comparando
+    `synth_df` contra `real_df` (ARCHITECTURE.md §5). Excluye columnas derivadas
+    y el id antes de generar los reportes.
+
+    Returns:
+        dict con `quality_overall`, `quality_column_shapes`,
+        `quality_column_pair_trends`, `diagnostic_overall` y
+        `diagnostic_properties` (lista de propiedades individuales).
+    """
     from sdmetrics.reports.single_table import DiagnosticReport, QualityReport
 
     fit_real = real_df.drop(columns=[c for c in DERIVED_COLUMNS + ["id_solicitud"] if c in real_df.columns])
@@ -40,6 +49,8 @@ def run_sdmetrics_reports(real_df: pd.DataFrame, synth_df: pd.DataFrame) -> dict
 
 
 def new_row_synthesis(real_df: pd.DataFrame, synth_df: pd.DataFrame) -> float:
+    """Fracción de filas sintéticas que NO son copias casi exactas de una fila
+    real (umbral de aceptación > 0.95, ARCHITECTURE.md §5)."""
     from sdmetrics.single_table import NewRowSynthesis
 
     fit_real = real_df.drop(columns=[c for c in DERIVED_COLUMNS + ["id_solicitud"] if c in real_df.columns])
@@ -78,6 +89,16 @@ def nearest_record_distance(real_df: pd.DataFrame, synth_df: pd.DataFrame, n_sam
 
 
 def target_correlation_mae(df: pd.DataFrame, exclude_known_exceptions: bool = True) -> float:
+    """Error absoluto medio entre las correlaciones de Spearman observadas en
+    `df` y las 13 objetivo de `validate.TARGET_CORRELATIONS` — "la métrica que
+    manda" de fidelidad (ARCHITECTURE.md §5, umbral < 0.05).
+
+    Args:
+        df: dataset a evaluar (semilla, sintético, o con target ya agregado).
+        exclude_known_exceptions: si True (por defecto), excluye del promedio los
+            pares en `validate.KNOWN_CORRELATION_EXCEPTIONS` — usar False para
+            ver el MAE crudo incluyendo la desviación documentada.
+    """
     from tikee.data.validate import KNOWN_CORRELATION_EXCEPTIONS
 
     errors = []

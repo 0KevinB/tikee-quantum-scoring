@@ -18,6 +18,24 @@ from tikee.models.evaluate import ks_statistic
 def group_metrics(
     y_true: np.ndarray, y_score: np.ndarray, threshold: float, group: pd.Series
 ) -> dict[str, Any]:
+    """Métricas de equidad por grupo (ARCHITECTURE.md §9.1): AUC, tasa de
+    aprobación, TPR/FPR y Brier por cada valor de `group`, más las brechas
+    resumen (paridad demográfica, impacto disparado, igualdad de oportunidad,
+    tasa de error igualada).
+
+    Args:
+        y_true: etiqueta binaria real.
+        y_score: probabilidad predicha.
+        threshold: umbral de decisión ya fijado (mismo criterio que
+            `evaluate.compute_metrics`).
+        group: atributo protegido categórico, mismo largo que `y_true`.
+
+    Returns:
+        dict con `per_group` (AUC/n/KS por valor de grupo), `approval_rate`,
+        `demographic_parity_diff`, `disparate_impact_ratio` (regla del 80%:
+        `disparate_impact_flag_below_80pct` marca alarma), `equal_opportunity_diff`,
+        `equalized_odds_diff` y `brier_by_group`.
+    """
     y_true = np.asarray(y_true)
     y_score = np.asarray(y_score)
     y_pred = (y_score >= threshold).astype(int)

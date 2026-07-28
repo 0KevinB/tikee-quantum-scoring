@@ -42,6 +42,7 @@ RANGES: dict[str, tuple[float, float]] = {
 
 
 def check_ranges(df: pd.DataFrame) -> dict[str, Any]:
+    """Verifica que cada columna de `RANGES` esté dentro de su rango del esquema."""
     violations = {}
     for col, (lo, hi) in RANGES.items():
         if col not in df.columns:
@@ -54,18 +55,24 @@ def check_ranges(df: pd.DataFrame) -> dict[str, Any]:
 
 
 def check_default_rate(df: pd.DataFrame, target: float = 0.08, tol: float = 0.005) -> dict[str, Any]:
+    """Tasa de default realizada dentro de `target`±`tol` (D4; banda final
+    [0.075, 0.085], más ancha que la tolerancia interna de `calibrate_beta0`
+    porque esta mide la tasa ya muestreada, no la probabilidad esperada)."""
     rate = df["default"].mean()
     ok = abs(rate - target) <= tol
     return {"ok": bool(ok), "rate": float(rate), "target": target, "tol": tol}
 
 
 def check_hard_constraint(df: pd.DataFrame) -> dict[str, Any]:
+    """Verifica `antiguedad_laboral_meses <= (edad-18)*12` para toda fila."""
     cap = (df["edad"] - 18) * 12
     violations = int((df["antiguedad_laboral_meses"] > cap + 1e-6).sum())
     return {"ok": violations == 0, "n_violations": violations}
 
 
 def check_protected_not_predictor(df: pd.DataFrame) -> dict[str, Any]:
+    """Verifica que `sexo`/`provincia`/`id_solicitud` existan en `df` pero nunca
+    aparezcan en `PREDICTOR_COLUMNS` (deben entrar solo a la auditoría de F7)."""
     leaked = [c for c in PROTECTED_COLUMNS if c in PREDICTOR_COLUMNS]
     all_present = all(c in df.columns for c in PROTECTED_COLUMNS)
     return {"ok": len(leaked) == 0 and all_present, "leaked": leaked, "all_present": all_present}
@@ -104,6 +111,15 @@ KNOWN_CORRELATION_EXCEPTIONS: set[tuple[str, str]] = {("ratio_cuota_ingreso", "i
 def check_correlations(
     df: pd.DataFrame, tol: float = 0.07, known_exceptions: set[tuple[str, str]] | None = None
 ) -> dict[str, Any]:
+    """Compara las 13 correlaciones de Spearman de `TARGET_CORRELATIONS` contra
+    su objetivo, con tolerancia `tol`. Los pares en `known_exceptions` (por
+    defecto `KNOWN_CORRELATION_EXCEPTIONS`) se reportan igual pero no cuentan
+    para el `ok` global — ver el comentario sobre esa constante.
+
+    Returns:
+        dict con `ok` (bool) y `pairs` (una entrada por par con `observed` y si
+        pasó o es una excepción conocida).
+    """
     known_exceptions = known_exceptions if known_exceptions is not None else KNOWN_CORRELATION_EXCEPTIONS
     rows = []
     all_ok = True
@@ -121,6 +137,9 @@ def check_correlations(
 
 
 def compute_vif(df: pd.DataFrame, columns: list[str]) -> dict[str, float]:
+    """Factor de inflación de varianza por columna numérica (evidencia de
+    multicolinealidad, E2). No es un chequeo de pasa/no-pasa: se reporta en el
+    resultado de `validate_dataset` pero no participa en su `ok` global."""
     from statsmodels.stats.outliers_influence import variance_inflation_factor
 
     X = df[columns].astype(float).to_numpy()
@@ -159,6 +178,7 @@ def quick_auc(df: pd.DataFrame, seed: int) -> float:
 
 
 def check_auc_band(auc: float, band: tuple[float, float] = (0.72, 0.82)) -> dict[str, Any]:
+    """Verifica que `auc` caiga dentro de `band` (checkpoint F1, innegociable)."""
     ok = band[0] <= auc <= band[1]
     return {"ok": bool(ok), "auc": float(auc), "band": band}
 
@@ -169,6 +189,22 @@ def validate_dataset(
     corr_tol: float = 0.07,
     auc_band: tuple[float, float] = (0.72, 0.82),
 ) -> dict[str, Any]:
+    """Corre todos los chequeos duros de F1 sobre un dataset ya con target y
+    agrega su resultado en un solo `ok`. No aborta nada por sí mismo: el
+    llamador decide qué hacer con `report["ok"] == False` (ver módulo).
+
+    Args:
+        df: dataset con las 18 variables + target (`add_target` ya corrido).
+        measured_auc: AUC medida externamente (p.ej. `quick_auc`); si se pasa,
+            se agrega el chequeo de banda y participa en el `ok` global.
+        corr_tol: tolerancia para `check_correlations`.
+        auc_band: banda aceptable para `measured_auc`.
+
+    Returns:
+        dict con una clave por chequeo (`ranges`, `default_rate`,
+        `hard_constraint`, `protected_not_predictor`, `correlations`, `vif`, y
+        `auc_band` si se pasó `measured_auc`) más `ok` (bool agregado).
+    """
     report = {
         "ranges": check_ranges(df),
         "default_rate": check_default_rate(df),

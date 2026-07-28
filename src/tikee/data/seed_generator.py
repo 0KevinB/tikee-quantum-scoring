@@ -236,6 +236,22 @@ def _apply_protected_bias(df: pd.DataFrame, rng: np.random.Generator) -> pd.Data
 
 
 def generate_seed_table(seed: int, n: int = 2000) -> pd.DataFrame:
+    """Genera la tabla semilla de Etapa 1 (ARCHITECTURE.md §4.4-4.5): cópula
+    gaussiana sobre el bloque continuo con la estructura de correlación de §4.2,
+    atributos protegidos y sesgo indirecto inyectado (D15), categóricas
+    independientes, y las dos variables derivadas (`ratio_cuota_ingreso`,
+    `ratio_deuda_ingreso`) calculadas al final desde las columnas base.
+
+    Args:
+        seed: semilla para todo el muestreo aleatorio de esta tabla.
+        n: número de filas a generar (2.000 por defecto, D11: la semilla se
+            amplía después a 8.000 filas vía `sdv_synthesizer.synthesize`).
+
+    Returns:
+        DataFrame con las 18 variables predictoras + `sexo`, `provincia`,
+        `zona_residencia`, `id_solicitud` — sin target todavía (lo agrega
+        `target_definition.add_target`).
+    """
     rng = np.random.default_rng(seed)
 
     ctx = _sample_protected_and_context(n, rng)

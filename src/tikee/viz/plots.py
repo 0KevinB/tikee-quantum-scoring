@@ -1,5 +1,9 @@
 """ROC superpuestas, KS, matriz de correlación, barras de métricas.
-ARCHITECTURE.md §8, §11."""
+ARCHITECTURE.md §8, §11.
+
+Todas las funciones son puras (reciben datos ya calculados, no entrenan nada) y
+devuelven una `plotly.graph_objects.Figure` lista para `st.plotly_chart`. Se
+usan desde `app/pages/*.py`."""
 
 from __future__ import annotations
 
@@ -11,6 +15,15 @@ from sklearn.metrics import roc_curve
 
 
 def roc_overlay(models: dict, X_test: np.ndarray, y_test: np.ndarray) -> go.Figure:
+    """Curvas ROC de varios brazos superpuestas en un mismo gráfico.
+
+    Args:
+        models: `{nombre_brazo: {"model": estimador_sklearn, "cols": [...]}}`
+            (el formato que guarda `scripts/f7_fairness_audit.py` en
+            `app_artifacts.joblib`).
+        X_test: matriz de features de test (columnas ya transformadas).
+        y_test: etiqueta binaria real de test.
+    """
     fig = go.Figure()
     for name, info in models.items():
         model, cols = info["model"], info["cols"]
@@ -23,6 +36,8 @@ def roc_overlay(models: dict, X_test: np.ndarray, y_test: np.ndarray) -> go.Figu
 
 
 def ks_curve(model, cols, X_test, y_test) -> go.Figure:
+    """TPR, FPR y KS=TPR-FPR en función del umbral, para un solo modelo ya
+    entrenado. El título muestra el KS máximo alcanzado."""
     score = model.predict_proba(X_test[:, cols])[:, 1]
     fpr, tpr, thr = roc_curve(y_test, score)
     ks = tpr - fpr
@@ -35,6 +50,8 @@ def ks_curve(model, cols, X_test, y_test) -> go.Figure:
 
 
 def confusion_matrix_figure(cm: dict) -> go.Figure:
+    """Matriz de confusión 2x2 a partir de `{"tn","fp","fn","tp"}` (el formato
+    de `evaluate.compute_metrics()["confusion_matrix"]`)."""
     z = [[cm["tn"], cm["fp"]], [cm["fn"], cm["tp"]]]
     fig = px.imshow(z, text_auto=True, x=["pred 0", "pred 1"], y=["real 0", "real 1"], color_continuous_scale="Blues")
     fig.update_layout(title="Matriz de confusión")
@@ -42,6 +59,7 @@ def confusion_matrix_figure(cm: dict) -> go.Figure:
 
 
 def correlation_heatmap(df: pd.DataFrame, columns: list[str]) -> go.Figure:
+    """Mapa de calor de correlación de Spearman entre `columns` de `df`."""
     corr = df[columns].corr(method="spearman")
     fig = px.imshow(corr, text_auto=".2f", color_continuous_scale="RdBu_r", zmin=-1, zmax=1)
     fig.update_layout(title="Matriz de correlación (Spearman)")
@@ -49,6 +67,8 @@ def correlation_heatmap(df: pd.DataFrame, columns: list[str]) -> go.Figure:
 
 
 def qubo_matrix_heatmap(Q: dict, n: int, variable_names: list[str]) -> go.Figure:
+    """Mapa de calor de la matriz QUBO `Q` (formato triangular superior
+    `{(i,i): valor, (i,j): valor}`), reconstruida a matriz densa simétrica."""
     M = np.zeros((n, n))
     for (i, j), v in Q.items():
         M[i, j] = v
@@ -59,6 +79,8 @@ def qubo_matrix_heatmap(Q: dict, n: int, variable_names: list[str]) -> go.Figure
 
 
 def selection_frequency_heatmap(frequency_by_arm: dict[str, dict[str, float]]) -> go.Figure:
+    """Mapa de calor variable x método con la frecuencia de selección (0-1) de
+    `experiments.stats.selection_frequency`, uno por brazo."""
     df = pd.DataFrame(frequency_by_arm).fillna(0.0)
     fig = px.imshow(df, color_continuous_scale="Viridis", zmin=0, zmax=1, text_auto=".1f")
     fig.update_layout(title="Frecuencia de selección (variable x método)", xaxis_title="Brazo", yaxis_title="Variable")
@@ -66,6 +88,8 @@ def selection_frequency_heatmap(frequency_by_arm: dict[str, dict[str, float]]) -
 
 
 def auc_boxplot(score_matrix: dict[str, dict]) -> go.Figure:
+    """Caja-bigote de AUC por brazo a través de semillas (filas = semilla,
+    columnas = brazo, mismo formato que en `experiments.stats`)."""
     df = pd.DataFrame(score_matrix)
     fig = go.Figure()
     for arm in df.columns:
@@ -75,6 +99,9 @@ def auc_boxplot(score_matrix: dict[str, dict]) -> go.Figure:
 
 
 def qaoa_gap_curve(qaoa_results: dict[str, dict]) -> go.Figure:
+    """Brecha de QAOA respecto al óptimo conocido en función de `p` (profundidad
+    del circuito). `qaoa_results` es `{"1": {...}, "2": {...}, "3": {...}}`, la
+    sección `qaoa` de `reports/cache/f4_level_a_qubo.json`."""
     ps = sorted(int(p) for p in qaoa_results.keys())
     gaps = [qaoa_results[str(p)].get("gap_vs_optimal", 0.0) for p in ps]
     fig = go.Figure(go.Scatter(x=ps, y=gaps, mode="lines+markers"))

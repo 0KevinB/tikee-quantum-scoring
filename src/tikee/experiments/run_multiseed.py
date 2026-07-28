@@ -25,6 +25,21 @@ CACHE_DIR = Path(__file__).resolve().parents[3] / "reports" / "cache"
 def run_multiseed(
     seeds: list[int], xgb_params_a: dict, xgb_params_b: dict, force: bool = False
 ) -> dict[int, dict]:
+    """Corre `run_experiment.run_seed` para cada semilla en `seeds`, cacheando el
+    resultado de cada una en `reports/cache/results_seed{N}.joblib` para poder
+    reanudar sin recomputar (riesgo R7 de PLAN.md).
+
+    Args:
+        seeds: lista de semillas a correr (D11: 10 semillas para el protocolo
+            principal, `config.yaml: seeds.multiseed`).
+        xgb_params_a: hiperparámetros fijos de XGBoost, Nivel A.
+        xgb_params_b: hiperparámetros fijos de XGBoost, Nivel B.
+        force: si True, recomputa aunque exista caché (ignora los `.joblib` ya
+            guardados).
+
+    Returns:
+        dict `{semilla: resultado de run_seed}`.
+    """
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
     all_results = {}
     for seed in seeds:

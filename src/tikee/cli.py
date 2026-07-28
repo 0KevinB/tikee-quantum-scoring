@@ -23,6 +23,14 @@ SCRIPTS = REPO_ROOT / "scripts"
 
 
 def cmd_generate(args: argparse.Namespace) -> int:
+    """`tikee generate --seed N [--n FILAS]`: genera un dataset completo (semilla
+    -> síntesis -> target -> validación) y lo escribe en
+    `data/processed/dataset_seed{N}.parquet`. Requiere `sigma_ruido` ya
+    calibrado en `config.yaml` (ver `scripts/f1_calibrate_sigma.py`).
+
+    Returns:
+        0 si el dataset pasa `validate.validate_dataset`, 1 en caso contrario.
+    """
     cfg = load_config()
     ensure_output_dirs(cfg)
 
@@ -61,6 +69,8 @@ def cmd_generate(args: argparse.Namespace) -> int:
 
 
 def _run_script(name: str, extra_args: list[str] | None = None) -> int:
+    """Ejecuta `scripts/{name}` como subproceso con el mismo intérprete de
+    Python, y propaga su código de salida."""
     cmd = [sys.executable, str(SCRIPTS / name), *(extra_args or [])]
     print(f"$ {' '.join(cmd)}")
     result = subprocess.run(cmd, cwd=REPO_ROOT)
@@ -68,15 +78,21 @@ def _run_script(name: str, extra_args: list[str] | None = None) -> int:
 
 
 def cmd_fidelity(args: argparse.Namespace) -> int:
+    """`tikee fidelity`: delega en `scripts/f2_fidelity_comparison.py` (F2)."""
     return _run_script("f2_fidelity_comparison.py")
 
 
 def cmd_select(args: argparse.Namespace) -> int:
+    """`tikee select --level {A,B}`: delega en el script de F4 (Nivel A) o F5
+    (Nivel B). `--method` se ignora hoy — cada script ya resuelve los 3-5
+    solucionadores aplicables a su nivel."""
     script = "f4_run_level_a_qubo.py" if args.level == "A" else "f5_run_level_b.py"
     return _run_script(script)
 
 
 def cmd_train(args: argparse.Namespace) -> int:
+    """`tikee train --arm X`: no hay un entry point de un solo brazo — imprime
+    cómo llamar a `run_experiment.run_seed` directamente, o usar `multiseed`."""
     print(
         f"Para entrenar un brazo individual (arm={args.arm}, seed={args.seed}) usa "
         "tikee.experiments.run_experiment.run_seed(seed, xgb_params_a, xgb_params_b) "
@@ -86,19 +102,28 @@ def cmd_train(args: argparse.Namespace) -> int:
 
 
 def cmd_evaluate(args: argparse.Namespace) -> int:
+    """`tikee evaluate`: las métricas ya se generan como parte de `multiseed`;
+    este subcomando solo señala dónde encontrarlas."""
     print("Las métricas por brazo se generan como parte de `multiseed` (reports/results.json).")
     return 0
 
 
 def cmd_fairness(args: argparse.Namespace) -> int:
+    """`tikee fairness`: delega en `scripts/f7_fairness_audit.py` (F7)."""
     return _run_script("f7_fairness_audit.py")
 
 
 def cmd_multiseed(args: argparse.Namespace) -> int:
+    """`tikee multiseed`: delega en `scripts/f6_run_multiseed.py` (F3-F6). El
+    flag `--seeds` se ignora hoy — el script usa las 10 semillas de
+    `config.yaml`; se deja el flag para uso futuro."""
     return _run_script("f6_run_multiseed.py")
 
 
 def cmd_report(args: argparse.Namespace) -> int:
+    """`tikee report`: regenera `reports/RESULTS.md` (solo las tablas, no la
+    narrativa) desde `reports/results.json`. `reports/INFORME.md` es manual y
+    no se toca aquí."""
     import json
 
     results_path = REPO_ROOT / "reports" / "results.json"
@@ -126,6 +151,9 @@ def cmd_report(args: argparse.Namespace) -> int:
 
 
 def cmd_all(args: argparse.Namespace) -> int:
+    """`tikee all`: pipeline completo end-to-end — generate, multiseed (F3-F6),
+    fairness (F7), fidelity (F2) y report — abortando en el primer paso que
+    falle. Es lo que corre `make experiment`."""
     steps = [
         ("generate --seed 42", lambda: cmd_generate(argparse.Namespace(seed=42, n=None))),
         ("multiseed (F3-F6)", lambda: _run_script("f6_run_multiseed.py")),
@@ -144,6 +172,7 @@ def cmd_all(args: argparse.Namespace) -> int:
 
 
 def build_parser() -> argparse.ArgumentParser:
+    """Construye el parser con los 9 subcomandos de ARCHITECTURE.md §10."""
     parser = argparse.ArgumentParser(prog="tikee")
     sub = parser.add_subparsers(dest="command", required=True)
 
@@ -188,6 +217,8 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    """Punto de entrada de `python -m tikee.cli`: parsea argv y despacha al
+    handler del subcomando elegido."""
     parser = build_parser()
     args = parser.parse_args(argv)
     return args.func(args)

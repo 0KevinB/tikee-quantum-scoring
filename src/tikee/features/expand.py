@@ -42,6 +42,12 @@ def _standardize(s: pd.Series, mean: float, std: float) -> pd.Series:
 
 
 class LevelBExpander:
+    """Expande Nivel A (18 variables) a Nivel B (45), determinista y trazable
+    (D9, ARCHITECTURE.md §4.6). Sigue la convención fit/transform de sklearn:
+    `fit` sobre train ajusta los únicos dos estadísticos que dependen de datos
+    (medias/desvíos para estandarizar, y las tablas WOE de deciles de
+    `score_buro`); `transform` puede llamarse sobre train o test sin fuga."""
+
     def __init__(self) -> None:
         self._z_stats: dict[str, tuple[float, float]] = {}
         self._score_decile_edges: np.ndarray | None = None
@@ -49,6 +55,9 @@ class LevelBExpander:
         self._fitted = False
 
     def fit(self, df_train: pd.DataFrame, y_train: np.ndarray) -> "LevelBExpander":
+        """Ajusta medias/desvíos de estandarización y la tabla WOE de deciles de
+        `score_buro` (f35) usando SOLO `df_train`. Debe llamarse antes de
+        `transform`, incluso para transformar el propio train."""
         for col in LEVEL_A_ORIGINAL:
             if pd.api.types.is_numeric_dtype(df_train[col]):
                 self._z_stats[col] = (float(df_train[col].mean()), float(df_train[col].std(ddof=0)))
@@ -79,6 +88,23 @@ class LevelBExpander:
         return bin_idx.map(self._score_decile_woe).astype(float)
 
     def transform(self, df: pd.DataFrame, seed: int = 0) -> pd.DataFrame:
+        """Produce las 45 columnas `f01..f45` (grupos 1-5 de §4.6: originales,
+        interacciones, transformaciones no lineales, recombinaciones financieras,
+        ruido puro) a partir de las variables de Nivel A de `df`.
+
+        Args:
+            df: DataFrame con las 18 variables originales (train o test).
+            seed: semilla de las dos columnas de ruido puro (f44, f45) — no
+                afecta a ninguna columna real; distinta semilla en train/test
+                es intencional (son ruido, no deben coincidir).
+
+        Returns:
+            DataFrame con exactamente las 45 columnas de `ALL_45_COLUMNS`, mismo
+            índice que `df`.
+
+        Raises:
+            RuntimeError: si `fit()` no se llamó antes.
+        """
         if not self._fitted:
             raise RuntimeError("fit() debe llamarse (sobre train) antes de transform()")
 
@@ -119,6 +145,10 @@ class LevelBExpander:
 
 
 def ground_truth_labels() -> dict[str, str]:
+    """Etiqueta cada una de las 45 columnas como `"relevant"`, `"irrelevant"` o
+    `"instrumental"` según de qué variable original de Nivel A deriva (§4.6).
+    `f30`, `f44` y `f45` son las trampas de ruido/irrelevancia diseñadas para
+    detectar sobreajuste — ver INFORME.md para el resultado de esa prueba."""
     labels = {}
     for i, col in enumerate(LEVEL_A_ORIGINAL, start=1):
         name = f"f{i:02d}"

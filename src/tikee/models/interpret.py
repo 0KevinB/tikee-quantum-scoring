@@ -27,6 +27,8 @@ EXPECTED_SIGNS: dict[str, int] = {
 
 
 def get_coefficients(model, feature_names: list[str]) -> dict[str, float]:
+    """Empareja los coeficientes de una regresión logística binaria (`model.coef_[0]`)
+    con sus nombres de columna transformada, en el mismo orden."""
     coefs = model.coef_[0]
     return dict(zip(feature_names, coefs.tolist()))
 
@@ -49,6 +51,9 @@ def check_sign_coherence(coef_by_variable: dict[str, float]) -> dict[str, Any]:
 
 
 def compute_vif_final(X: np.ndarray, feature_names: list[str]) -> dict[str, float]:
+    """VIF de las columnas del modelo FINAL (ya seleccionadas), a diferencia de
+    `data.validate.compute_vif` que mide sobre las 18 variables completas. Un
+    VIF más bajo aquí es un argumento de interpretabilidad medible (PLAN.md §5)."""
     from statsmodels.stats.outliers_influence import variance_inflation_factor
 
     X_with_const = np.column_stack([X, np.ones(len(X))])
@@ -62,6 +67,18 @@ def compute_vif_final(X: np.ndarray, feature_names: list[str]) -> dict[str, floa
 
 
 def shap_summary(model, X_sample: np.ndarray, feature_names: list[str], model_type: str = "logreg") -> dict[str, float]:
+    """Importancia media |SHAP| por variable. Usa `LinearExplainer` para
+    logística (exacto, rápido) o `TreeExplainer` para XGBoost.
+
+    Args:
+        model: modelo ya entrenado (LogisticRegression o XGBClassifier).
+        X_sample: matriz de features sobre la que calcular SHAP.
+        feature_names: nombres de columna, mismo orden que `X_sample`.
+        model_type: `"logreg"` o cualquier otro valor para el explicador de árboles.
+
+    Returns:
+        dict `{nombre_variable: importancia_media_absoluta}`.
+    """
     import shap
 
     if model_type == "logreg":

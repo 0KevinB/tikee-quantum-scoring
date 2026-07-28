@@ -19,6 +19,7 @@ from sklearn.metrics import (
 
 
 def ks_statistic(y_true: np.ndarray, y_score: np.ndarray) -> float:
+    """Estadístico de Kolmogorov-Smirnov: max(TPR - FPR) sobre todos los umbrales."""
     fpr, tpr, _ = roc_curve(y_true, y_score)
     return float(np.max(tpr - fpr))
 
@@ -31,6 +32,19 @@ def find_threshold_max_ks(y_true: np.ndarray, y_score: np.ndarray) -> float:
 
 
 def compute_metrics(y_true: np.ndarray, y_score: np.ndarray, threshold: float) -> dict[str, Any]:
+    """Batería completa de métricas de discriminación, calibración y negocio
+    sobre un umbral ya fijado (ARCHITECTURE.md §8.3).
+
+    Args:
+        y_true: etiqueta binaria real.
+        y_score: probabilidad predicha de la clase positiva.
+        threshold: umbral de decisión (D19: fijado por máximo KS en train, nunca
+            en test — usar `find_threshold_max_ks` sobre el score de train).
+
+    Returns:
+        dict con `auc`, `ks`, `pr_auc`, `gini`, `brier`, `precision`, `recall`,
+        `f1`, `confusion_matrix` (tn/fp/fn/tp), `approval_rate` y `threshold`.
+    """
     y_pred = (y_score >= threshold).astype(int)
     tn, fp, fn, tp = confusion_matrix(y_true, y_pred, labels=[0, 1]).ravel()
 
@@ -52,6 +66,21 @@ def compute_metrics(y_true: np.ndarray, y_score: np.ndarray, threshold: float) -
 def bootstrap_ci_auc(
     y_true: np.ndarray, y_score: np.ndarray, n_boot: int = 1000, seed: int | None = None, alpha: float = 0.05
 ) -> tuple[float, float]:
+    """Intervalo de confianza del AUC por bootstrap sobre el test (§8.6): mide
+    incertidumbre DENTRO de una semilla, distinta de la variabilidad ENTRE
+    semillas que capturan `experiments.stats`. No se deben sumar ambas fuentes.
+
+    Args:
+        y_true: etiqueta binaria real del conjunto de prueba.
+        y_score: probabilidad predicha, mismo largo que `y_true`.
+        n_boot: número de remuestreos.
+        seed: semilla del remuestreo.
+        alpha: nivel de significancia (0.05 -> IC del 95%).
+
+    Returns:
+        Tupla `(lo, hi)` con los percentiles `alpha/2` y `1-alpha/2` del AUC
+        remuestreado. Los remuestreos sin ambas clases se descartan.
+    """
     rng = np.random.default_rng(seed)
     y_true = np.asarray(y_true)
     y_score = np.asarray(y_score)

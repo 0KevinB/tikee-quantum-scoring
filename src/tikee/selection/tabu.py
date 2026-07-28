@@ -13,6 +13,18 @@ def solve_qubo_tabu(
     num_reads: int = 100,
     seed: int | None = None,
 ) -> dict[str, Any]:
+    """Segundo heurístico de referencia (búsqueda tabú). Si iguala al recocido y
+    al óptimo certificado, el paisaje del problema es fácil y no distingue el
+    mérito de un heurístico sobre otro (ARCHITECTURE.md §7.5).
+
+    Args:
+        Q: matriz QUBO en formato `{(i,i): valor, (i,j): valor}`.
+        num_reads: número de lecturas independientes.
+        seed: semilla para reproducibilidad.
+
+    Returns:
+        dict con `sample`, `energy` y `wall_time_s`.
+    """
     sampler = TabuSampler()
     t0 = time.perf_counter()
     sampleset = sampler.sample_qubo(Q, num_reads=num_reads, seed=seed)
